@@ -48,7 +48,8 @@
     "pretty": "prettier '**/*.{js,ts,tsx,md,,yml,html}' --write",
     "storybook": "start-storybook -p 9000",
     "storybook:build": "build-storybook --output-dir example",
-    "test": "jest"
+    "test": "jest",
+    "up": "cd dist & npm publish"
   },
   "np": {
     "yarn": true,
