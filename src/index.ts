@@ -1,5 +1,5 @@
-import Layda from './react/Layda'
+import DashOut from './react/DashOut'
 import Page from './models/Page'
 
 export { Page }
-export default Layda;
+export default DashOut;

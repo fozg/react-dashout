@@ -1,6 +1,16 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import Layout, { Page } from '../src'
+import Dashout, { Page } from '../src'
+
+function TestComp({ title, ...props }: { title?: string; page: Page }) {
+  console.log(props.page.path)
+  return (
+    <div>
+      <h2>{title}</h2>
+      <code>{props.page.getPath()}</code>
+    </div>
+  )
+}
 
 const onLayoutReady = () => {
   new Page({
@@ -8,43 +18,43 @@ const onLayoutReady = () => {
     title: 'Home',
     path: '/',
     exact: true,
-    // component: () => <Task1 />
-  }).addToSite()
-
+    component: (props: any) => <TestComp title="Home" {...props} />,
+  })
   var DashBoardPage = new Page({
     key: 'Dashboard',
     title: 'Dashboard',
     path: '/dashboard',
-    component: () => <h1>Dashboard</h1>,
-    children: [
-      new Page({
-        key: 'Talks1',
-        title: 'Talks 1',
-        path: '/task-1',
-        component: () => <h1>Task 1</h1>,
-      }),
-      new Page({ key: 'Talks2', title: 'Talks 2', path: '/task-2' }),
-      new Page({ key: 'Talks3', title: 'Talks 3', path: '/task-3' }),
-      new Page({
-        key: 'Talks5',
-        title: 'Talks 5',
-        path: '/task-5',
-        children: [
-          new Page({
-            key: 'TalksSub1',
-            title: 'What language should I learn in 2020',
-            path: '/task-sub-1',
-          }),
-        ],
-      }),
-      new Page({ key: 'Talks4', title: 'Talks', path: '/11' }),
-    ],
+    component: (props: any) => <TestComp title="Dashboard" {...props} />,
   })
-  DashBoardPage.addToSite()
+  new Page({
+    key: 'Task100',
+    title: 'Talks 1000',
+    path: '/task-1000',
+    component: (props: any) => <TestComp title="Random task" {...props} />,
+    parent: DashBoardPage,
+  })
+  new Page({
+    key: 'Talks2',
+    title: 'Talks 2',
+    path: '/task-2',
+    component: TestComp,
+  })
+  new Page({
+    key: 'Talks4',
+    title: 'Should not visible',
+    path: '/hidden',
+    navigationOptions: { visible: false },
+  })
+  new Page({
+    key: 'Talks4',
+    title: 'Should visible',
+    path: '/show',
+    navigationOptions: { visible: true },
+  })
 }
 
 const WrapComponent = () => {
-  return <Layout onReady={onLayoutReady} />
+  return <Dashout onReady={onLayoutReady} />
 }
 
 storiesOf('react-dashout', module).add('Default', () => <WrapComponent />)

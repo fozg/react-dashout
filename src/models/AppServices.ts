@@ -2,12 +2,12 @@
  * All app flow state should be go here.
  */
 import { AppEvent } from './AppEvent';
-import Site from './Site';
+import Root from './Root';
 import Page from './Page';
 import actions from './actions';
 
 interface IAppServices {
-  site: Site | undefined;
+  root: Root | undefined;
   appEventsMap: Map<String, Function>;
   /**
    * Must init some core AppEvent.
@@ -24,7 +24,7 @@ interface IAppServices {
    */
   addAppEvent(appEvent: AppEvent): void
 
-  getSite(): Site
+  getRoot(): Root
 }
 
 interface IAction {
@@ -37,12 +37,12 @@ export type W = (typeof window) & {
 };
 
 export default class AppService implements IAppServices {
-  site: Site;
+  root: Root;
   appEventsMap: Map<String, Function>;
 
   constructor() {
     // App must have a Site
-    this.site = new Site();
+    this.root = new Root();
     this.appEventsMap = new Map();
 
     // setup global for this service
@@ -52,8 +52,8 @@ export default class AppService implements IAppServices {
   init(done?: Function) {
     // default events go here.
     this.addAppEvent(new AppEvent({
-      key: actions.core.add_page, action: (payload: Page) => {
-        this.site.addPage(payload)
+      key: actions.core.add_page_to_root, action: (payload: Page) => {
+        this.root.addPage(payload)
       }
     }))
     
@@ -73,13 +73,14 @@ export default class AppService implements IAppServices {
 
   addAppEvent(appEvent: AppEvent) {
     if (this.appEventsMap.has(appEvent.key)) {
-      throw new Error("AppEvent keys already decleare.");
+      return;
+      // throw new Error("AppEvent keys already decleare.");
     } else {
       this.appEventsMap.set(appEvent.key, appEvent.action);
     }
   }
 
-  getSite() {
-    return this.site;
+  getRoot() {
+    return this.root;
   }
 }

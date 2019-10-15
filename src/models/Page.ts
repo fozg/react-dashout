@@ -1,32 +1,37 @@
-import React, { ComponentClass } from 'react';
+import React, { ComponentType } from 'react';
 import { W } from './AppServices'
-import actions from './actions';
 import LightState from 'react-light-state';
-import DefaultComponent from '../react/DefaultComponent';
+import DefaultComponent from '../react/default/DefaultComponent';
+import Root from './Root';
 
 interface IPageModel {
   key: string,
   title: String;
   path: string;
-  parent?: IPage;
-  children?: LightState;
-  component?: React.FC | ComponentClass;
+  parent: Page | Root;
+  readonly children?: LightState;
+  component?: React.FC | ComponentType | React.ElementType;
+}
+
+interface INavigationOptions {
+  visible: boolean
 }
 
 interface IPageModelConstructor {
   key: string,
   title: String;
   path: string;
-  parent?: IPage;
-  children?: Array<Page>;
-  component?: React.FC | ComponentClass;
+  parent?: Page | Root;
+  readonly children?: Array<Page>;
+  component?: React.FC | ComponentType | React.ElementType;
   exact?: boolean;
   navigationComponent?: React.FC<{ page: Page, level: number }>;
+  navigationOptions?: INavigationOptions
 }
 
 interface IPage extends IPageModel {
   addToSite(): void;
-  addSubPage(page: IPage): IPage
+  addPage(page: Page): Page
 }
 
 /**
@@ -37,37 +42,39 @@ export default class Page implements IPage {
   key: string;
   title: String;
   path: string;
-  parent?: IPage;
-  children: LightState;
+  parent: Page | Root;
+  readonly children: LightState;
   exact?: boolean;
-  component: React.FC | ComponentClass;
+  component: React.FC | ComponentType | React.ElementType;
   navigationComponent?: React.FC<{ page: Page, level: number }>;
+  navigationOptions: INavigationOptions
 
-  constructor({ key, title, path, parent, children, component, navigationComponent, exact = false }: IPageModelConstructor) {
+  constructor({ key, title, path, parent, component, navigationComponent, exact = false, navigationOptions }: IPageModelConstructor) {
     this.key = key;
     this.title = title;
     this.path = path;
-    this.parent = parent;
+    this.parent = parent ? parent : (window as W).AppService.getRoot();
     this.component = component || DefaultComponent;
     this.navigationComponent = navigationComponent;
     this.exact = exact;
+    this.navigationOptions = navigationOptions ? navigationOptions : { visible: true }
 
     this.children = new LightState({
-      pages: children ? children.map(page => {
-        page.parent = this;
-        return page;
-      }) : []
+      pages: []
     })
+
+    this.parent.addPage(this)
   }
 
   addToSite() {
-    (window as W).AppService.dispatch({
-      key: actions.core.add_page,
-      payload: this
-    })
+
   }
 
-  addSubPage(page: IPage) {
+  getPath(): string {
+    return this.parent.getPath() + this.path;
+  }
+
+  addPage(page: Page) {
     page.parent = this;
     this.children.setState({
       pages: this.children.getState('pages').concat(page)

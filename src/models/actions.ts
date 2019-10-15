@@ -1,5 +1,5 @@
 export default {
   core: {
-    add_page: "core.add_page"
+    add_page_to_root: "core.add_page_to_root"
   }
 }

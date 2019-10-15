@@ -1,46 +1,78 @@
-import React, { ReactElement } from "react";
-import { Fill, ViewPort, Top, LeftResizable } from "react-spaces";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Service } from "./Layda";
-import Page from "../models/Page";
+import React, { ReactElement, ComponentType, ElementType } from 'react'
+import styled from 'styled-components'
+import { Fill, ViewPort, Top, LeftResizable } from 'react-spaces'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { Service } from './DashOut'
+import Page from '../models/Page'
+import DefaultLogo from './default/DefaultLogo'
 
-const Layout: React.FC<{ left?: ReactElement }> = ({ children, left }) => {
-  const site = Service.getSite();
-  const pages = site.usePages();
+type Props = {
+  left?: ReactElement
+  logo?: ReactElement
+}
+
+const Layout: React.FC<Props> = ({ left, logo = <DefaultLogo /> }) => {
+  const site = Service.getRoot()
+  const pages = site.usePages()
 
   return (
     <Router>
       <ViewPort>
-        <Top size="40px" style={{ background: "#000" }}></Top>
+        <StyledTop size="40px">{logo}</StyledTop>
         <ViewPort>
           <LeftResizable
             maximumSize={500}
             minimumSize={250}
             size="250px"
             style={{
-              borderRight: "1px solid #eee",
+              borderRight: '1px solid #eee',
               padding: 10,
-              background: "#f5f5f5"
+              background: '#f5f5f5',
             }}
           >
             {left}
           </LeftResizable>
           <Fill style={{ padding: 10 }}>
-            <Switch>
-              {pages.map((page: Page) => (
-                <Route
-                  key={page.key}
-                  path={page.path}
-                  component={page.component}
-                  exact={page.exact}
-                />
-              ))}
-            </Switch>
+            {pages.map((page: Page) => (
+              <BuildRoute page={page} key={page.key} />
+            ))}
           </Fill>
         </ViewPort>
       </ViewPort>
     </Router>
-  );
-};
+  )
+}
 
-export default Layout;
+const BuildRoute: React.FC<{ page: Page }> = ({ page }) => (
+  <Switch>
+    {[
+      <Route
+        path={page.path}
+        component={(props: object) => withPage(props)(page.component, page)}
+        exact={page.exact}
+      />,
+      page.children
+        .getState('pages')
+        .map((child: Page) => <BuildRoute page={child} key={child.key} />),
+    ]}
+  </Switch>
+)
+
+function withPage(props: object) {
+  return function(
+    Component: React.FC<{ page: Page }> | ComponentType | ElementType,
+    page: Page,
+  ) {
+    return <Component {...props} page={page} />
+  }
+}
+
+export default Layout
+
+const StyledTop = styled(Top)`
+  background: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`
