@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import Page from '../models/Page'
-import NavigationItem from './NavigationItem'
+import NavigationItem from './NavigationGroupItems'
 import Layout from './Layout'
 import AppService from '../models/AppServices'
 import Root from '../models/Root'

@@ -5,8 +5,8 @@ import DefaultComponent from '../react/default/DefaultComponent';
 import Root from './Root';
 
 interface IPageModel {
-  key: string,
-  title: String;
+  key: string;
+  title: string;
   path: string;
   parent: Page | Root;
   readonly children?: LightState;
@@ -14,19 +14,26 @@ interface IPageModel {
 }
 
 interface INavigationOptions {
-  visible: boolean
+  visible: boolean;
+  component?: React.FC<{ page: Page, level: number }>;
 }
 
-interface IPageModelConstructor {
+interface IHeaderOptions {
+  title?: string;
+  visible?: boolean;
+  controls?: JSX.Element[] | React.ElementType | ComponentType,
+}
+
+interface IPageConstructor {
   key: string,
-  title: String;
+  title: string;
   path: string;
   parent?: Page | Root;
   readonly children?: Array<Page>;
   component?: React.FC | ComponentType | React.ElementType;
   exact?: boolean;
-  navigationComponent?: React.FC<{ page: Page, level: number }>;
-  navigationOptions?: INavigationOptions
+  navigationOptions?: INavigationOptions,
+  headerOptions?: IHeaderOptions
 }
 
 interface IPage extends IPageModel {
@@ -40,24 +47,24 @@ interface IPage extends IPageModel {
  */
 export default class Page implements IPage {
   key: string;
-  title: String;
+  title: string;
   path: string;
   parent: Page | Root;
   readonly children: LightState;
   exact?: boolean;
   component: React.FC | ComponentType | React.ElementType;
-  navigationComponent?: React.FC<{ page: Page, level: number }>;
-  navigationOptions: INavigationOptions
+  navigationOptions: INavigationOptions;
+  headerOptions: IHeaderOptions;
 
-  constructor({ key, title, path, parent, component, navigationComponent, exact = false, navigationOptions }: IPageModelConstructor) {
+  constructor({ key, title, path, parent, component, exact = false, navigationOptions, headerOptions }: IPageConstructor) {
     this.key = key;
     this.title = title;
     this.path = path;
     this.parent = parent ? parent : (window as W).AppService.getRoot();
     this.component = component || DefaultComponent;
-    this.navigationComponent = navigationComponent;
     this.exact = exact;
-    this.navigationOptions = navigationOptions ? navigationOptions : { visible: true }
+    this.navigationOptions = navigationOptions ? navigationOptions : { visible: true, component: undefined }
+    this.headerOptions = { visible: true, title: this.title, ...headerOptions ? headerOptions : {} }
 
     this.children = new LightState({
       pages: []

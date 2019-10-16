@@ -1,13 +1,29 @@
 import * as React from 'react'
+import styled from 'styled-components'
 import { storiesOf } from '@storybook/react'
 import Dashout, { Page } from '../src'
 
+const Button = styled.div`
+  background-color: #eee;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 10px;
+  :hover {
+    background-color: #ddd;
+  }
+`
+
 function TestComp({ title, ...props }: { title?: string; page: Page }) {
-  console.log(props.page.path)
   return (
     <div>
-      <h2>{title}</h2>
-      <code>{props.page.getPath()}</code>
+      <code>
+        This is <b>{title}</b>
+      </code>
+      <br />
+      <code>and path is: {props.page.getPath()}</code>
     </div>
   )
 }
@@ -19,11 +35,15 @@ const onLayoutReady = () => {
     path: '/',
     exact: true,
     component: (props: any) => <TestComp title="Home" {...props} />,
+    headerOptions: {
+      controls: [<Button>Add Product</Button>, <Button>Add Order</Button>],
+    },
   })
   var DashBoardPage = new Page({
     key: 'Dashboard',
     title: 'Dashboard',
     path: '/dashboard',
+    exact: true,
     component: (props: any) => <TestComp title="Dashboard" {...props} />,
   })
   new Page({

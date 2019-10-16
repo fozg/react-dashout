@@ -21,11 +21,12 @@ body {
 addParameters({
   options: {
     theme: create({
-      base: 'light',
+      base: 'dark',
       brandTitle: pck.name,
       brandUrl: pck.repository.url,
     }),
-    isFullscreen: false,
+    isFullscreen: true,
+    showNav: false,
     panelPosition: 'bottom',
   },
 })

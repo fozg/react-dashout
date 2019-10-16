@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { Service } from './DashOut'
 import Page from '../models/Page'
 import DefaultLogo from './default/DefaultLogo'
+import Header from './default/Header'
 
 type Props = {
   left?: ReactElement
@@ -17,7 +18,7 @@ const Layout: React.FC<Props> = ({ left, logo = <DefaultLogo /> }) => {
 
   return (
     <Router>
-      <ViewPort>
+      <ViewPortWrap>
         <StyledTop size="40px">{logo}</StyledTop>
         <ViewPort>
           <LeftResizable
@@ -38,7 +39,7 @@ const Layout: React.FC<Props> = ({ left, logo = <DefaultLogo /> }) => {
             ))}
           </Fill>
         </ViewPort>
-      </ViewPort>
+      </ViewPortWrap>
     </Router>
   )
 }
@@ -47,7 +48,7 @@ const BuildRoute: React.FC<{ page: Page }> = ({ page }) => (
   <Switch>
     {[
       <Route
-        path={page.path}
+        path={page.getPath()}
         component={(props: object) => withPage(props)(page.component, page)}
         exact={page.exact}
       />,
@@ -63,7 +64,12 @@ function withPage(props: object) {
     Component: React.FC<{ page: Page }> | ComponentType | ElementType,
     page: Page,
   ) {
-    return <Component {...props} page={page} />
+    return (
+      <>
+        {page.headerOptions.visible && <Header page={page} />}
+        <Component {...props} page={page} />
+      </>
+    )
   }
 }
 
@@ -75,4 +81,7 @@ const StyledTop = styled(Top)`
   display: flex;
   flex-direction: row;
   align-items: center;
+`
+const ViewPortWrap = styled(ViewPort)`
+  background-color: #fff;
 `
