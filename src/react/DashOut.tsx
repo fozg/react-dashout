@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import Page from '../models/Page'
 import NavigationItem from './NavigationGroupItems'
 import Layout from './Layout'
@@ -13,11 +13,16 @@ interface IOnReadyCallback {
 
 type Props = { onReady?: IOnReadyCallback; logo?: ReactElement }
 
+var site = Service.getRoot()
+
 const DashOut: React.FC<Props> = ({ onReady, logo }) => {
-  Service.init(() => {
-    onReady && onReady(Service.getRoot())
-  })
-  var site = Service.getRoot()
+
+  useEffect(() => {
+    Service.init().then(root => {
+      onReady && onReady(root)
+    })
+  }, [])
+
   var pages = site.usePages()
 
   return (

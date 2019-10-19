@@ -44,22 +44,21 @@ export default class AppService implements IAppServices {
     // App must have a Site
     this.root = new Root();
     this.appEventsMap = new Map();
-
     // setup global for this service
-    (window as W).AppService = this;
+
   }
 
-  init(done?: Function) {
+  async init(): Promise<Root> {
     // default events go here.
     this.addAppEvent(new AppEvent({
       key: actions.core.add_page_to_root, action: (payload: Page) => {
         this.root.addPage(payload)
       }
-    }))
-    
-    if (done) {
-      done();
-    }
+    }));
+
+    (window as W).AppService = this;
+
+    return this.root;
   }
 
   dispatch({ key, payload }: IAction) {

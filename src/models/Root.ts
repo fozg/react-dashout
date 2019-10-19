@@ -9,8 +9,13 @@ interface IRoot {
   removePage(page: Page): void
 }
 
+export enum DashoutModelType {
+  Page = "Page",
+  Root = "Root"
+}
+
 export default class Root implements IRoot {
-  rootState: LightState;
+  readonly rootState: LightState;
   constructor() {
     this.rootState = new LightState({
       pages: []
@@ -18,6 +23,7 @@ export default class Root implements IRoot {
   }
 
   addPage(page: Page) {
+    page.parent = this;
     this.rootState.setState({
       pages: this.rootState.getState('pages').concat(page)
     })
@@ -33,5 +39,9 @@ export default class Root implements IRoot {
 
   getPath(): string {
     return ''
+  }
+
+  get type(): DashoutModelType {
+    return DashoutModelType.Root
   }
 }

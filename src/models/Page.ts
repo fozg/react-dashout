@@ -2,7 +2,7 @@ import React, { ComponentType } from 'react';
 import { W } from './AppServices'
 import LightState from 'react-light-state';
 import DefaultComponent from '../react/default/DefaultComponent';
-import Root from './Root';
+import Root, { DashoutModelType } from './Root';
 
 interface IPageModel {
   key: string;
@@ -10,12 +10,14 @@ interface IPageModel {
   path: string;
   parent: Page | Root;
   readonly children?: LightState;
-  component?: React.FC | ComponentType | React.ElementType;
+  component?: React.ComponentType | React.SFC<any>;
 }
 
 interface INavigationOptions {
-  visible: boolean;
-  component?: React.FC<{ page: Page, level: number }>;
+  visible?: boolean;
+  component?: React.SFC<{ page: Page, level: number }>;
+  icon?: any,
+  childPaddingMultiplier?: number
 }
 
 interface IHeaderOptions {
@@ -30,7 +32,7 @@ interface IPageConstructor {
   path: string;
   parent?: Page | Root;
   readonly children?: Array<Page>;
-  component?: React.FC | ComponentType | React.ElementType;
+  component?: React.ComponentType | React.SFC<any>;
   exact?: boolean;
   navigationOptions?: INavigationOptions,
   headerOptions?: IHeaderOptions
@@ -52,7 +54,7 @@ export default class Page implements IPage {
   parent: Page | Root;
   readonly children: LightState;
   exact?: boolean;
-  component: React.FC | ComponentType | React.ElementType;
+  component: React.ComponentType | React.SFC<any>;
   navigationOptions: INavigationOptions;
   headerOptions: IHeaderOptions;
 
@@ -63,13 +65,12 @@ export default class Page implements IPage {
     this.parent = parent ? parent : (window as W).AppService.getRoot();
     this.component = component || DefaultComponent;
     this.exact = exact;
-    this.navigationOptions = navigationOptions ? navigationOptions : { visible: true, component: undefined }
+    this.navigationOptions = { visible: true, component: undefined, childPaddingMultiplier: 0, ...navigationOptions ? navigationOptions : {} }
     this.headerOptions = { visible: true, title: this.title, ...headerOptions ? headerOptions : {} }
 
     this.children = new LightState({
       pages: []
     })
-
     this.parent.addPage(this)
   }
 
@@ -91,5 +92,33 @@ export default class Page implements IPage {
 
   usePages(): Array<Page> {
     return this.children.useStore((state: any) => (state.pages))
+  }
+
+  get type(): DashoutModelType {
+    return DashoutModelType.Page
+  }
+
+  isChildHaveThisPath(path: string): boolean {
+    var say = false;
+    var pages = this.children.getState('pages');
+    for (var i = 0; i < pages.length; i++) {
+      if (pages[i].getPath().includes(path)) {
+        say = true;
+        break;
+      }
+    }
+    return say;
+  }
+
+  haveChildWithEmptyPath(): boolean {
+    var say = false;
+    var pages = this.children.getState('pages');
+    for (var i = 0; i < pages.length; i++) {
+      if (pages[i].path === '') {
+        say = true;
+        break;
+      }
+    }
+    return say;
   }
 }

@@ -1,7 +1,7 @@
-import React, { ReactElement, ComponentType, ElementType } from 'react'
+import React, { ReactElement } from 'react'
 import styled from 'styled-components'
 import { Fill, ViewPort, Top, LeftResizable } from 'react-spaces'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Service } from './DashOut'
 import Page from '../models/Page'
 import DefaultLogo from './default/DefaultLogo'
@@ -22,18 +22,18 @@ const Layout: React.FC<Props> = ({ left, logo = <DefaultLogo /> }) => {
         <StyledTop size="40px">{logo}</StyledTop>
         <ViewPort>
           <LeftResizable
+            scrollable
             maximumSize={500}
             minimumSize={250}
             size="250px"
             style={{
               borderRight: '1px solid #eee',
-              padding: 10,
               background: '#f5f5f5',
             }}
           >
             {left}
           </LeftResizable>
-          <Fill style={{ padding: 10 }}>
+          <Fill style={{ padding: 10 }} scrollable>
             {pages.map((page: Page) => (
               <BuildRoute page={page} key={page.key} />
             ))}
@@ -44,24 +44,26 @@ const Layout: React.FC<Props> = ({ left, logo = <DefaultLogo /> }) => {
   )
 }
 
-const BuildRoute: React.FC<{ page: Page }> = ({ page }) => (
-  <Switch>
-    {[
+const BuildRoute = ({ page }: { page: Page }) => {
+  const childs = page.usePages()
+
+  return (
+    <>
       <Route
         path={page.getPath()}
         component={(props: object) => withPage(props)(page.component, page)}
         exact={page.exact}
-      />,
-      page.children
-        .getState('pages')
-        .map((child: Page) => <BuildRoute page={child} key={child.key} />),
-    ]}
-  </Switch>
-)
+      />
+      {childs.map((child: Page) => (
+        <BuildRoute page={child} key={child.key} />
+      ))}
+    </>
+  )
+}
 
-function withPage(props: object) {
+function withPage<T>(props: object) {
   return function(
-    Component: React.FC<{ page: Page }> | ComponentType | ElementType,
+    Component: React.ComponentType<any> | React.FC<any>,
     page: Page,
   ) {
     return (
