@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement } from 'react'
 import Page from '../models/Page'
 import NavigationItem from './NavigationGroupItems'
 import Layout from './Layout'
@@ -49,22 +49,6 @@ class DashOut extends React.Component<Props> {
     return <Wrap logo={logo} root={this.Service.getRoot()} />
   }
 }
-
-// const DashOut: React.FC<Props> = ({ onReady, logo }) => {
-//   const [loading, setLoading] = useState(true)
-
-//   useEffect(() => {
-//     Service.init().then(root => {
-//       onReady && onReady(root)
-//       setLoading(false)
-//     })
-//   }, [])
-
-//   if (loading) {
-//     return <></>
-//   }
-//   return <Wrap logo={logo} />
-// }
 
 function Wrap({ logo, root }: { logo: any; root: Root }) {
   var pages = root.usePages()
