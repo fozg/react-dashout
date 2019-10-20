@@ -137,12 +137,26 @@ const onLayoutReady = (root: Root) => {
     path: '/show',
     navigationOptions: { visible: true, icon: <Icon iconName="Tablet" /> },
   })
-  new Page({
+  var task7 = new Page({
     key: 'Task 7',
     title: 'Task 7',
     path: '/task 7',
     navigationOptions: { visible: true, icon: <Icon iconName="Tablet" /> },
   })
+  new Page({
+    key: 'SubTask7',
+    title: 'Sub Task 7',
+    path: '',
+    navigationOptions: { visible: true, icon: <Icon iconName="CaretRight" />, childPaddingMultiplier: 20 },
+    parent: task7,
+  })
+  // new Page({
+  //   key: 'SubTask7-2',
+  //   title: 'Sub Task 7 - 2',
+  //   path: '/sub2',
+  //   navigationOptions: { visible: true, icon: <Icon iconName="CaretRight" />, childPaddingMultiplier: 20 },
+  //   parent: task7,
+  // })
 }
 
 const WrapComponent = () => {

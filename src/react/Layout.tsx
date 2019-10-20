@@ -9,11 +9,13 @@ import Header from './default/Header'
 
 type Props = {
   left?: ReactElement
-  logo?: ReactElement
+  logo?: ReactElement,
+  pages: Array<Page>
 }
 
+
 const Layout: React.FC<Props> = ({ left, logo = <DefaultLogo /> }) => {
-  const site = Service.getRoot()
+  var site = Service.getRoot()
   const pages = site.usePages()
 
   return (
@@ -25,7 +27,7 @@ const Layout: React.FC<Props> = ({ left, logo = <DefaultLogo /> }) => {
             scrollable
             maximumSize={500}
             minimumSize={250}
-            size="250px"
+            size="280px"
             style={{
               borderRight: '1px solid #eee',
               background: '#f5f5f5',

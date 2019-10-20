@@ -39,8 +39,9 @@ const StyledLink = styled(NavLink)`
   display: block;
   display: flex;
   align-items: center;
-  height: 30px;
-  line-height: 30px;
+  height: 40px;
+  line-height: 40px;
+  box-sizing: border-box;
 
   &:hover {
     background: #ddd;

@@ -49,7 +49,8 @@
     "storybook": "start-storybook -p 9000",
     "storybook:build": "build-storybook --output-dir example",
     "test": "jest",
-    "up": "cd dist & npm publish"
+    "up": "cd dist & npm publish",
+    "docs": "typedoc --out docs ./src --mode file --module commonjs"
   },
   "np": {
     "yarn": true,

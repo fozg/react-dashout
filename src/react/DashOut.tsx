@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import Page from '../models/Page'
 import NavigationItem from './NavigationGroupItems'
 import Layout from './Layout'
@@ -16,18 +16,27 @@ type Props = { onReady?: IOnReadyCallback; logo?: ReactElement }
 var site = Service.getRoot()
 
 const DashOut: React.FC<Props> = ({ onReady, logo }) => {
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     Service.init().then(root => {
       onReady && onReady(root)
+      setLoading(false)
     })
   }, [])
 
-  var pages = site.usePages()
+  if (loading) {
+    return <></>
+  }
+  return <Wrap logo={logo} />
+}
 
+function Wrap({ logo }: Props) {
+  var pages = site.usePages()
   return (
     <Layout
       logo={logo}
+      pages={pages}
       left={
         <>
           {pages &&
