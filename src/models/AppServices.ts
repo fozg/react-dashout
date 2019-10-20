@@ -3,7 +3,7 @@
  */
 import { AppEvent } from './AppEvent';
 import Root from './Root';
-import Page from './Page';
+import Page, { INavigationOptions } from './Page';
 import actions from './actions';
 
 interface IAppServices {
@@ -32,17 +32,27 @@ interface IAction {
   payload: Object
 }
 
+export interface IDashoutConfig {
+  navigationOptions: INavigationOptions
+}
+
 export type W = (typeof window) & {
   AppService: AppService;
 };
+
+const defaultDashoutConfig = {
+  navigationOptions: {
+    childPaddingMultiplier: 0
+  }
+}
 
 export default class AppService implements IAppServices {
   root: Root;
   appEventsMap: Map<String, Function>;
 
-  constructor() {
+  constructor(dashoutConfig: IDashoutConfig = defaultDashoutConfig) {
     // App must have a Site
-    this.root = new Root();
+    this.root = new Root({ ...defaultDashoutConfig, ...dashoutConfig });
     this.appEventsMap = new Map();
     // setup global for this service
 

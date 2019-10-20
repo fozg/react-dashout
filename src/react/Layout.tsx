@@ -2,21 +2,20 @@ import React, { ReactElement } from 'react'
 import styled from 'styled-components'
 import { Fill, ViewPort, Top, LeftResizable } from 'react-spaces'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import { Service } from './DashOut'
+// import { Service } from './DashOut'
 import Page from '../models/Page'
 import DefaultLogo from './default/DefaultLogo'
 import Header from './default/Header'
 
 type Props = {
   left?: ReactElement
-  logo?: ReactElement,
+  logo?: ReactElement
   pages: Array<Page>
 }
 
-
-const Layout: React.FC<Props> = ({ left, logo = <DefaultLogo /> }) => {
-  var site = Service.getRoot()
-  const pages = site.usePages()
+const Layout: React.FC<Props> = ({ left, logo = <DefaultLogo />, pages }) => {
+  // var site = Service.getRoot()
+  // const pages = site.usePages()
 
   return (
     <Router>

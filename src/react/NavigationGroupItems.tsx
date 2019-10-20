@@ -18,12 +18,14 @@ const isSelected = (page: Page, path: string): boolean => {
   return result
 }
 
-const NavigationGroupItems: React.FC<RouteComponentProps & Props> = ({
+const NavigationGroupItems: React.FC<RouteComponentProps & Props>  = ({
   page,
   level = 0,
   location,
 }) => {
   const childs = page.usePages()
+
+  if (!page.navigationOptions.visible) return <></>;
 
   return (
     <Wrapper isSelelected={isSelected(page, location.pathname)}>

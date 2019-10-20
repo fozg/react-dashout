@@ -31,11 +31,9 @@ export default ({ page, level }: props) => {
 const StyledLink = styled(NavLink)`
   color: #666;
   display: block;
-  // margin: 0.1em 0;
   text-decoration: none;
   font-size: 16px;
   padding: 5px;
-  // border-radius: 6px;
   display: block;
   display: flex;
   align-items: center;
@@ -44,11 +42,12 @@ const StyledLink = styled(NavLink)`
   box-sizing: border-box;
 
   &:hover {
-    background: #ddd;
+    // background: #ddd;
     color: #000;
+    font-weight: 500;
   }
   &.active:not(.haveChildEmptyPath) {
-    font-weight: 600;
+    font-weight: 700;
     color: #000;
     background-color: #ddd;
     border-right: 3px solid #696969;
@@ -57,6 +56,7 @@ const StyledLink = styled(NavLink)`
   ${(props: { 'data-child': boolean }) =>
     props['data-child'] &&
     css`
+      font-size: 14px;
       &.active {
         background-color: #ccc;
       }

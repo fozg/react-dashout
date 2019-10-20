@@ -3,6 +3,7 @@ import { W } from './AppServices'
 import LightState from 'react-light-state';
 import DefaultComponent from '../react/default/DefaultComponent';
 import Root, { DashoutModelType } from './Root';
+import { IDashoutConfig } from './AppServices';
 
 interface IPageModel {
   key: string;
@@ -13,7 +14,7 @@ interface IPageModel {
   component?: React.ComponentType | React.SFC<any>;
 }
 
-interface INavigationOptions {
+export interface INavigationOptions {
   visible?: boolean;
   component?: React.SFC<{ page: Page, level: number }>;
   icon?: any,
@@ -65,7 +66,11 @@ export default class Page implements IPage {
     this.parent = parent ? parent : (window as W).AppService.getRoot();
     this.component = component || DefaultComponent;
     this.exact = exact;
-    this.navigationOptions = { visible: true, component: undefined, childPaddingMultiplier: 0, ...navigationOptions ? navigationOptions : {} }
+    this.navigationOptions = {
+      visible: true,
+      component: undefined,
+      ...this.getDashoutConfig().navigationOptions, ...navigationOptions ? navigationOptions : {}
+    }
     this.headerOptions = { visible: true, title: this.title, ...headerOptions ? headerOptions : {} }
 
     this.children = new LightState({
@@ -120,5 +125,9 @@ export default class Page implements IPage {
       }
     }
     return say;
+  }
+
+  getDashoutConfig(): IDashoutConfig {
+    return this.parent.getDashoutConfig()
   }
 }

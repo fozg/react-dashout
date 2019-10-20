@@ -1,5 +1,6 @@
 import LightState from 'react-light-state';
 import Page from './Page';
+import { IDashoutConfig } from './AppServices';
 
 interface IRoot {
   rootState: LightState
@@ -16,7 +17,10 @@ export enum DashoutModelType {
 
 export default class Root implements IRoot {
   readonly rootState: LightState;
-  constructor() {
+  private dashoutConfig: IDashoutConfig
+
+  constructor(initConfig: IDashoutConfig) {
+    this.dashoutConfig = initConfig;
     this.rootState = new LightState({
       pages: []
     });
@@ -43,5 +47,9 @@ export default class Root implements IRoot {
 
   get type(): DashoutModelType {
     return DashoutModelType.Root
+  }
+
+  getDashoutConfig(): IDashoutConfig {
+    return this.dashoutConfig
   }
 }

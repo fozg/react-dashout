@@ -100,7 +100,6 @@ const onLayoutReady = (root: Root) => {
     exact: true,
     navigationOptions: {
       icon: <Icon iconName="CaretRight" />,
-      childPaddingMultiplier: 20
     },
     component: (props: any) => <TestComp title="overview" {...props} />,
     parent: DashBoardPage,
@@ -111,7 +110,16 @@ const onLayoutReady = (root: Root) => {
     path: '/task-1000',
     navigationOptions: {
       icon: <Icon iconName="CaretRight" />,
-      childPaddingMultiplier: 20
+    },
+    component: (props: any) => <TestComp title="Random task" {...props} />,
+    parent: DashBoardPage,
+  })
+  new Page({
+    key: 'Sub Visible',
+    title: 'Sub Visible',
+    path: '/test/add',
+    navigationOptions: {
+      visible: true,
     },
     component: (props: any) => <TestComp title="Random task" {...props} />,
     parent: DashBoardPage,
@@ -121,7 +129,7 @@ const onLayoutReady = (root: Root) => {
     title: 'Talks 2',
     path: '/task-2',
     navigationOptions: {
-      icon: <Icon iconName="Tablet" />
+      icon: <Icon iconName="Tablet" />,
     },
     component: TestComp,
   })
@@ -147,7 +155,10 @@ const onLayoutReady = (root: Root) => {
     key: 'SubTask7',
     title: 'Sub Task 7',
     path: '',
-    navigationOptions: { visible: true, icon: <Icon iconName="CaretRight" />, childPaddingMultiplier: 20 },
+    navigationOptions: {
+      visible: true,
+      icon: <Icon iconName="CaretRight" />,
+    },
     parent: task7,
   })
   // new Page({
@@ -160,7 +171,12 @@ const onLayoutReady = (root: Root) => {
 }
 
 const WrapComponent = () => {
-  return <Dashout onReady={onLayoutReady} />
+  return (
+    <Dashout
+      onReady={onLayoutReady}
+      config={{ navigationOptions: { childPaddingMultiplier: 30 } }}
+    />
+  )
 }
 
 storiesOf('react-dashout', module).add('Default', () => <WrapComponent />)
