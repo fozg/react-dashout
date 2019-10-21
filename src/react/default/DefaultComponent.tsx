@@ -1,9 +1,17 @@
 import React from 'react'
+import styled from 'styled-components'
 
 export default function() {
   return (
-    <div>
-      <h3>Not implements yet..</h3>
-    </div>
+    <Wrapper>
+      <p>this page's not implements yet..</p>
+    </Wrapper>
   )
 }
+
+const Wrapper = styled.code`
+  border-radius: 10px;
+  display: block;
+  color: #999;
+  box-sizing: border-box;
+`

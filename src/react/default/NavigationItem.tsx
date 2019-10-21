@@ -32,7 +32,7 @@ const StyledLink = styled(NavLink)`
   color: #666;
   display: block;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 14px;
   padding: 5px;
   display: block;
   display: flex;
@@ -42,15 +42,15 @@ const StyledLink = styled(NavLink)`
   box-sizing: border-box;
 
   &:hover {
-    // background: #ddd;
+    background: #ddd;
     color: #000;
-    font-weight: 500;
   }
+
   &.active:not(.haveChildEmptyPath) {
     font-weight: 700;
     color: #000;
     background-color: #ddd;
-    border-right: 3px solid #696969;
+    box-shadow: 3px 0 0 0 #696969;
   }
 
   ${(props: { 'data-child': boolean }) =>

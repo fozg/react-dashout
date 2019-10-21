@@ -11,7 +11,7 @@ interface IPageModel {
   path: string;
   parent: Page | Root;
   readonly children?: LightState;
-  component?: React.ComponentType | React.SFC<any>;
+  component?: React.ComponentType | React.SFC<any> | boolean;
 }
 
 export interface INavigationOptions {
@@ -33,7 +33,7 @@ interface IPageConstructor {
   path: string;
   parent?: Page | Root;
   readonly children?: Array<Page>;
-  component?: React.ComponentType | React.SFC<any>;
+  component?: React.ComponentType | React.SFC<any> | boolean;
   exact?: boolean;
   navigationOptions?: INavigationOptions,
   headerOptions?: IHeaderOptions
@@ -55,7 +55,7 @@ export default class Page implements IPage {
   parent: Page | Root;
   readonly children: LightState;
   exact?: boolean;
-  component: React.ComponentType | React.SFC<any>;
+  component: React.ComponentType | React.SFC<any> | boolean;
   navigationOptions: INavigationOptions;
   headerOptions: IHeaderOptions;
 
@@ -64,7 +64,7 @@ export default class Page implements IPage {
     this.title = title;
     this.path = path;
     this.parent = parent ? parent : (window as W).AppService.getRoot();
-    this.component = component || DefaultComponent;
+    this.component = component !== false ? (component || DefaultComponent) : false;
     this.exact = exact;
     this.navigationOptions = {
       visible: true,

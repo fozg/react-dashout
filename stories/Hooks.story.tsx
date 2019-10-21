@@ -35,6 +35,8 @@ function TestComp({ title, ...props }: { title?: string; page: Page }) {
       </code>
       <br />
       <code>and path is: {props.page.getPath()}</code>
+      <div></div>
+      <pre>testing...</pre>
     </div>
   )
 }
@@ -90,76 +92,108 @@ const onLayoutReady = (root: Root) => {
     navigationOptions: {
       icon: <Icon iconName="ViewDashboard" />,
     },
-    component: () => <></>,
+    component: false,
     headerOptions: { visible: false },
   })
   new Page({
-    key: 'Overview',
-    title: 'Overview',
+    key: 'Analytics',
+    title: 'Analytics',
     path: '',
     exact: true,
     navigationOptions: {
-      icon: <Icon iconName="CaretRight" />,
+      icon: <Icon iconName="AnalyticsView" />,
     },
     component: (props: any) => <TestComp title="overview" {...props} />,
     parent: DashBoardPage,
   })
   new Page({
-    key: 'Task100',
-    title: 'Talks 1000',
-    path: '/task-1000',
+    key: 'C',
+    title: 'Sales',
+    path: '/Sales',
     navigationOptions: {
-      icon: <Icon iconName="CaretRight" />,
+      icon: <Icon iconName="MultiSelectMirrored" />,
     },
     component: (props: any) => <TestComp title="Random task" {...props} />,
     parent: DashBoardPage,
   })
   new Page({
-    key: 'Sub Visible',
-    title: 'Sub Visible',
+    key: 'Comer',
+    title: 'Commerce',
     path: '/test/add',
     navigationOptions: {
       visible: true,
+      icon: <Icon iconName="MultiSelectMirrored" />,
     },
     component: (props: any) => <TestComp title="Random task" {...props} />,
     parent: DashBoardPage,
   })
-  new Page({
-    key: 'Talks2',
-    title: 'Talks 2',
-    path: '/task-2',
-    navigationOptions: {
-      icon: <Icon iconName="Tablet" />,
+  var Assets = new Page({
+    key: 'C1',
+    title: 'Assets',
+    path: '/assets',
+    headerOptions: {
+      visible: false,
     },
-    component: TestComp,
+    component: false,
+    navigationOptions: {
+      visible: true,
+      icon: <Icon iconName="FolderSearch" />,
+    },
+  })
+
+  new Page({
+    key: 'C11',
+    title: 'Videos',
+    exact: true,
+    path: '',
+    navigationOptions: { visible: true, icon: <Icon iconName="FileImage" /> },
+    parent: Assets,
   })
   new Page({
-    key: 'taskHidden',
-    title: 'Should not visible',
-    path: '/hidden',
-    navigationOptions: { visible: false, icon: <Icon iconName="Tablet" /> },
+    key: 'C12',
+    title: 'Images',
+    path: '/images',
+    navigationOptions: { visible: true, icon: <Icon iconName="FileImage" /> },
+    parent: Assets,
   })
   new Page({
-    key: 'Talks4',
-    title: 'Should visible',
-    path: '/show',
-    navigationOptions: { visible: true, icon: <Icon iconName="Tablet" /> },
+    key: 'C13',
+    title: 'Others',
+    path: '/other',
+    navigationOptions: {
+      visible: true,
+      icon: <Icon iconName="FileTemplate" />,
+    },
+    parent: Assets,
   })
-  var task7 = new Page({
-    key: 'Task 7',
-    title: 'Task 7',
-    path: '/task 7',
-    navigationOptions: { visible: true, icon: <Icon iconName="Tablet" /> },
+
+  var Settings = new Page({
+    key: 'Setttings',
+    title: 'Settings',
+    path: '/settings',
+    component: false,
+    navigationOptions: { visible: true, icon: <Icon iconName="Settings" /> },
   })
   new Page({
     key: 'SubTask7',
-    title: 'Sub Task 7',
+    title: 'User Settings',
     path: '',
+    exact: true,
     navigationOptions: {
       visible: true,
-      icon: <Icon iconName="CaretRight" />,
+      icon: <Icon iconName="PlayerSettings" />,
     },
-    parent: task7,
+    parent: Settings,
+  })
+  new Page({
+    key: 'ss',
+    title: 'System settings',
+    path: '/system',
+    navigationOptions: {
+      visible: true,
+      icon: <Icon iconName="System" />,
+    },
+    parent: Settings,
   })
   // new Page({
   //   key: 'SubTask7-2',

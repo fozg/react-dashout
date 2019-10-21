@@ -56,6 +56,7 @@ const Wrapper = styled.div`
     props.isSelelected &&
     css`
       background-color: #e8e8e8;
-      box-shadow: inset -3px 0 0 #bbb;
+      // box-shadow: inset -3px 0 0 #bbb;
+      border-right: 3px solid #bbb;
     `}
 `
