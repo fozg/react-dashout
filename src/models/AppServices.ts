@@ -3,7 +3,7 @@
  */
 import { AppEvent } from './AppEvent';
 import Root from './Root';
-import Page, { INavigationOptions } from './Page';
+import Page, { INavigationOptions, IContentOptions } from './Page';
 import actions from './actions';
 
 interface IAppServices {
@@ -33,7 +33,8 @@ interface IAction {
 }
 
 export interface IDashoutConfig {
-  navigationOptions: INavigationOptions
+  navigationOptions?: INavigationOptions,
+  contentOptions?: IContentOptions
 }
 
 export type W = (typeof window) & {

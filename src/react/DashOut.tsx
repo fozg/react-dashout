@@ -16,8 +16,8 @@ type Props = {
   onReady?: IOnReadyCallback
   logo?: React.ReactNode
   config?: IDashoutConfig
-  topNavStyles?: CSSProperties
-  defaultRoute?: string
+  defaultRoute?: string,
+  topNavStyles?: CSSProperties,
 }
 
 // var site = Service.getRoot()

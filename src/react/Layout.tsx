@@ -87,7 +87,7 @@ function withPage<T>(props: object) {
     if (Component === false) return <></>
 
     return (
-      <MainPanel>
+      <MainPanel style={{maxWidth: page.contentOptions.maxWidth}}>
         {page.headerOptions.visible && <Header page={page} />}
         <ContentWrapper>
           <Component {...props} page={page} />
@@ -109,7 +109,9 @@ const StyledTopNav = styled(Top)`
 const ViewPortWrap = styled(ViewPort)`
   background-color: #fff;
 `
-const MainPanel = styled.div``
+const MainPanel = styled.div`
+  margin: auto;
+`
 
 const transform = keyframes`
   from {

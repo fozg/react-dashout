@@ -29,6 +29,7 @@ export default ({ page, level }: props) => {
 }
 
 const StyledLink = styled(NavLink)`
+  user-select: none;
   color: #666;
   display: block;
   text-decoration: none;

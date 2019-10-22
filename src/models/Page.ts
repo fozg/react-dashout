@@ -21,6 +21,10 @@ export interface INavigationOptions {
   childPaddingMultiplier?: number
 }
 
+export interface IContentOptions {
+  maxWidth?: number | string
+}
+
 interface IHeaderOptions {
   title?: string;
   visible?: boolean;
@@ -36,7 +40,8 @@ interface IPageConstructor {
   component?: React.ComponentType | React.SFC<any> | boolean;
   exact?: boolean;
   navigationOptions?: INavigationOptions,
-  headerOptions?: IHeaderOptions
+  contentOptions?: IContentOptions;
+  headerOptions?: IHeaderOptions;
 }
 
 interface IPage extends IPageModel {
@@ -57,9 +62,10 @@ export default class Page implements IPage {
   exact?: boolean;
   component: React.ComponentType | React.SFC<any> | boolean;
   navigationOptions: INavigationOptions;
+  contentOptions: IContentOptions;
   headerOptions: IHeaderOptions;
 
-  constructor({ key, title, path, parent, component, exact = false, navigationOptions, headerOptions }: IPageConstructor) {
+  constructor({ key, title, path, parent, component, exact = false, navigationOptions, contentOptions, headerOptions }: IPageConstructor) {
     this.key = key;
     this.title = title;
     this.path = path;
@@ -70,6 +76,10 @@ export default class Page implements IPage {
       visible: true,
       component: undefined,
       ...this.getDashoutConfig().navigationOptions, ...navigationOptions ? navigationOptions : {}
+    }
+    this.contentOptions = {
+      maxWidth: '100%',
+      ...this.getDashoutConfig().contentOptions, ...contentOptions ? contentOptions : {}
     }
     this.headerOptions = { visible: true, title: this.title, ...headerOptions ? headerOptions : {} }
 

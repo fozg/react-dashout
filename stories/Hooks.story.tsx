@@ -92,6 +92,9 @@ const onLayoutReady = (root: Root) => {
     navigationOptions: {
       icon: <Icon iconName="ViewDashboard" />,
     },
+    contentOptions: {
+      maxWidth: 1000,
+    },
     component: false,
     headerOptions: { visible: false },
   })
@@ -100,6 +103,9 @@ const onLayoutReady = (root: Root) => {
     title: 'Analytics',
     path: '',
     exact: true,
+    contentOptions: {
+      maxWidth: 1000,
+    },
     navigationOptions: {
       icon: <Icon iconName="AnalyticsView" />,
     },
@@ -211,7 +217,10 @@ const WrapComponent = () => {
       defaultRoute="/dashboard"
       logo={<strong style={{ paddingLeft: 10 }}>Dashout Demo</strong>}
       onReady={onLayoutReady}
-      config={{ navigationOptions: { childPaddingMultiplier: 30 } }}
+      config={{
+        navigationOptions: { childPaddingMultiplier: 30 },
+        contentOptions: { maxWidth: 1200 },
+      }}
       topNavStyles={{
         backgroundColor: '#fff',
         borderBottom: '1px solid #ddd',
