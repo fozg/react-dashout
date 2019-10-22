@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled, { keyframes, CSSProperties } from 'styled-components'
 import { Fill, ViewPort, Top, LeftResizable } from 'react-spaces'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 // import { Service } from './DashOut'
 import Page from '../models/Page'
 import DefaultLogo from './default/DefaultLogo'
@@ -11,16 +11,27 @@ type Props = {
   left?: ReactElement
   logo?: ReactElement
   pages: Array<Page>
+  topNavStyles?: CSSProperties
+  defaultRoute?: string
 }
 
-const Layout: React.FC<Props> = ({ left, logo = <DefaultLogo />, pages }) => {
+const Layout: React.FC<Props> = ({
+  left,
+  logo = <DefaultLogo />,
+  pages,
+  topNavStyles = {},
+  defaultRoute,
+}) => {
   // var site = Service.getRoot()
   // const pages = site.usePages()
 
   return (
     <Router>
+      {defaultRoute && <Redirect exact from="/" to={defaultRoute} />}
       <ViewPortWrap>
-        <StyledTop size="40px">{logo}</StyledTop>
+        <StyledTopNav size="40px" style={topNavStyles}>
+          {logo}
+        </StyledTopNav>
         <ViewPort>
           <LeftResizable
             scrollable
@@ -88,7 +99,7 @@ function withPage<T>(props: object) {
 
 export default Layout
 
-const StyledTop = styled(Top)`
+const StyledTopNav = styled(Top)`
   background: #000;
   color: #fff;
   display: flex;

@@ -127,6 +127,7 @@ const onLayoutReady = (root: Root) => {
     component: (props: any) => <TestComp title="Random task" {...props} />,
     parent: DashBoardPage,
   })
+
   var Assets = new Page({
     key: 'C1',
     title: 'Assets',
@@ -207,8 +208,15 @@ const onLayoutReady = (root: Root) => {
 const WrapComponent = () => {
   return (
     <Dashout
+      defaultRoute="/dashboard"
+      logo={<strong style={{ paddingLeft: 10 }}>Dashout Demo</strong>}
       onReady={onLayoutReady}
       config={{ navigationOptions: { childPaddingMultiplier: 30 } }}
+      topNavStyles={{
+        backgroundColor: '#fff',
+        borderBottom: '1px solid #ddd',
+        color: '#000',
+      }}
     />
   )
 }

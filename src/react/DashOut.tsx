@@ -1,4 +1,5 @@
-import React, { ReactElement } from 'react'
+import React from 'react'
+import { CSSProperties } from 'styled-components'
 import Page from '../models/Page'
 import NavigationItem from './NavigationGroupItems'
 import Layout from './Layout'
@@ -13,8 +14,10 @@ interface IOnReadyCallback {
 
 type Props = {
   onReady?: IOnReadyCallback
-  logo?: ReactElement
+  logo?: React.ReactNode
   config?: IDashoutConfig
+  topNavStyles?: CSSProperties
+  defaultRoute?: string
 }
 
 // var site = Service.getRoot()
@@ -41,20 +44,19 @@ class DashOut extends React.Component<Props> {
 
   render() {
     const { loading } = this.state
-    const { logo } = this.props
 
     if (loading) {
       return <></>
     }
-    return <Wrap logo={logo} root={this.Service.getRoot()} />
+    return <Wrap root={this.Service.getRoot()} {...this.props} />
   }
 }
 
-function Wrap({ logo, root }: { logo: any; root: Root }) {
+function Wrap({ root, ...rest }: { root: Root }) {
   var pages = root.usePages()
   return (
     <Layout
-      logo={logo}
+      {...rest}
       pages={pages}
       left={
         <>
@@ -68,8 +70,7 @@ function Wrap({ logo, root }: { logo: any; root: Root }) {
             )}
         </>
       }
-    >
-    </Layout>
+    ></Layout>
   )
 }
 
