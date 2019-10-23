@@ -6,6 +6,11 @@ import Page from '../src/models/Page'
 import Root from '../src/models/Root'
 import { Icon } from 'office-ui-fabric-react/lib/Icon'
 import { initializeIcons } from '@uifabric/icons'
+// @ts-ignore
+import List from './components/List'
+// @ts-ignore
+import ViewDetail from './components/ViewDetail'
+
 initializeIcons()
 
 export type W = (typeof window) & {
@@ -98,19 +103,35 @@ const onLayoutReady = (root: Root) => {
     component: false,
     headerOptions: { visible: false },
   })
-  new Page({
+  var AnalysTics = new Page({
     key: 'Analytics',
     title: 'Analytics',
-    path: '',
-    exact: true,
+    path: '/analytics',
     contentOptions: {
       maxWidth: 1000,
+      horizontal: true,
+      columns: 1
     },
     navigationOptions: {
       icon: <Icon iconName="AnalyticsView" />,
     },
-    component: (props: any) => <TestComp title="overview" {...props} />,
+    component: List,
     parent: DashBoardPage,
+  })
+  new Page({
+    key: 'ViewDetail',
+    title: 'View detail',
+    path: '/:id',
+    contentOptions: {
+      // maxWidth: 1000,
+      columns: 3
+    },
+    navigationOptions: {
+      icon: <Icon iconName="AnalyticsView" />,
+      // visible: false
+    },
+    component: ViewDetail,
+    parent: AnalysTics,
   })
   new Page({
     key: 'C',

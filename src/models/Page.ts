@@ -22,7 +22,9 @@ export interface INavigationOptions {
 }
 
 export interface IContentOptions {
-  maxWidth?: number | string
+  maxWidth?: number | string,
+  horizontal?: boolean,
+  columns?: number
 }
 
 interface IHeaderOptions {
@@ -79,6 +81,7 @@ export default class Page implements IPage {
     }
     this.contentOptions = {
       maxWidth: '100%',
+      horizontal: false,
       ...this.getDashoutConfig().contentOptions, ...contentOptions ? contentOptions : {}
     }
     this.headerOptions = { visible: true, title: this.title, ...headerOptions ? headerOptions : {} }

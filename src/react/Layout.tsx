@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import styled, { keyframes, CSSProperties } from 'styled-components'
+import styled, { keyframes, CSSProperties, css } from 'styled-components'
 import { Fill, ViewPort, Top, LeftResizable } from 'react-spaces'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 // import { Service } from './DashOut'
@@ -47,9 +47,12 @@ const Layout: React.FC<Props> = ({
           </LeftResizable>
           <Fill style={{ padding: 10, backgroundColor: '#eee' }} scrollable>
             {pages.map((page: Page) => (
-              <div key={page.key}>
+              <RouterLayout
+                className="fozg"
+                horizontal
+              >
                 <BuildRoute page={page} />
-              </div>
+              </RouterLayout>
             ))}
           </Fill>
         </ViewPort>
@@ -58,11 +61,11 @@ const Layout: React.FC<Props> = ({
   )
 }
 
-const BuildRoute = ({ page }: { page: Page }) => {
+const BuildRoute: any = ({ page }: { page: Page }) => {
   const childs = page.usePages()
 
   return (
-    <div>
+    <>
       {page.component === false ? (
         false
       ) : (
@@ -70,12 +73,13 @@ const BuildRoute = ({ page }: { page: Page }) => {
           path={page.getPath()}
           render={(props: object) => withPage(props)(page.component, page)}
           exact={page.exact}
+          key={page.key}
         />
       )}
       {childs.map((child: Page) => (
         <BuildRoute page={child} key={child.key} />
       ))}
-    </div>
+    </>
   )
 }
 
@@ -87,7 +91,12 @@ function withPage<T>(props: object) {
     if (Component === false) return <></>
 
     return (
-      <MainPanel style={{maxWidth: page.contentOptions.maxWidth}}>
+      <MainPanel
+        style={{
+          maxWidth: page.contentOptions.maxWidth,
+          flex: page.contentOptions.columns || 1,
+        }}
+      >
         {page.headerOptions.visible && <Header page={page} />}
         <ContentWrapper>
           <Component {...props} page={page} />
@@ -110,7 +119,7 @@ const ViewPortWrap = styled(ViewPort)`
   background-color: #fff;
 `
 const MainPanel = styled.div`
-  margin: auto;
+  margin: 0 auto;
 `
 
 const transform = keyframes`
@@ -128,4 +137,14 @@ export const ContentWrapper = styled.div`
   border-radius: 8px;
   box-sizing: border-box;
   animation: ${transform} 0.3s;
+`
+
+const RouterLayout = styled.div`
+  ${(props: { horizontal: boolean }) =>
+    props.horizontal &&
+    css`
+      display: flex;
+      align-items: top;
+      flex-direction: row;
+    `}
 `
