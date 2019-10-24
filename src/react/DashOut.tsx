@@ -16,8 +16,8 @@ type Props = {
   onReady?: IOnReadyCallback
   logo?: React.ReactNode
   config?: IDashoutConfig
-  defaultRoute?: string,
-  topNavStyles?: CSSProperties,
+  defaultRoute?: string
+  topNavStyles?: CSSProperties
 }
 
 // var site = Service.getRoot()
@@ -54,10 +54,12 @@ class DashOut extends React.Component<Props> {
 
 function Wrap({ root, ...rest }: { root: Root }) {
   var pages = root.usePages()
+
   return (
     <Layout
       {...rest}
       pages={pages}
+      root={root}
       left={
         <>
           {pages &&

@@ -1,11 +1,19 @@
-import React, { ReactElement } from 'react'
-import styled, { keyframes, CSSProperties, css } from 'styled-components'
+import React, { ReactElement, useEffect } from 'react'
+import styled, {
+  keyframes,
+  CSSProperties,
+  css,
+  createGlobalStyle,
+} from 'styled-components'
 import { Fill, ViewPort, Top, LeftResizable } from 'react-spaces'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 // import { Service } from './DashOut'
 import Page from '../models/Page'
 import DefaultLogo from './default/DefaultLogo'
 import Header from './default/Header'
+import MasterLayout from './default/_layouts/MasterLayout'
+import DefaultLayout from './default/_layouts/DefaultLayout'
+import Root from '../models/Root'
 
 type Props = {
   left?: ReactElement
@@ -13,6 +21,7 @@ type Props = {
   pages: Array<Page>
   topNavStyles?: CSSProperties
   defaultRoute?: string
+  root: Root
 }
 
 const Layout: React.FC<Props> = ({
@@ -21,16 +30,20 @@ const Layout: React.FC<Props> = ({
   pages,
   topNavStyles = {},
   defaultRoute,
+  root,
 }) => {
   // var site = Service.getRoot()
   // const pages = site.usePages()
+  var activePage = root.useActivePage()
 
   return (
     <Router>
+      <GlobalStyle />
       {defaultRoute && <Redirect exact from="/" to={defaultRoute} />}
       <ViewPortWrap>
-        <StyledTopNav size="40px" style={topNavStyles}>
-          {logo}
+        <StyledTopNav size="50px" style={topNavStyles}>
+          <Logo>{logo}</Logo>
+          <Breadcrumb>{activePage && activePage.getPath()}</Breadcrumb>
         </StyledTopNav>
         <ViewPort>
           <LeftResizable
@@ -47,10 +60,7 @@ const Layout: React.FC<Props> = ({
           </LeftResizable>
           <Fill style={{ padding: 10, backgroundColor: '#eee' }} scrollable>
             {pages.map((page: Page) => (
-              <RouterLayout
-                className="fozg"
-                horizontal
-              >
+              <RouterLayout className="fozg" horizontal>
                 <BuildRoute page={page} />
               </RouterLayout>
             ))}
@@ -64,45 +74,56 @@ const Layout: React.FC<Props> = ({
 const BuildRoute: any = ({ page }: { page: Page }) => {
   const childs = page.usePages()
 
-  return (
-    <>
-      {page.component === false ? (
-        false
-      ) : (
-        <Route
-          path={page.getPath()}
-          render={(props: object) => withPage(props)(page.component, page)}
-          exact={page.exact}
-          key={page.key}
-        />
-      )}
-      {childs.map((child: Page) => (
-        <BuildRoute page={child} key={child.key} />
-      ))}
-    </>
-  )
+  const left =
+    page.component === false ? (
+      false
+    ) : (
+      <Route
+        path={page.getPath()}
+        render={(props: object) => withPage(props)(page.component, page)}
+        exact={page.exact}
+        key={page.key}
+      />
+    )
+  const right = childs.map((child: Page) => (
+    <BuildRoute page={child} key={child.key} />
+  ))
+
+  return <DefaultLayout left={left} right={right} />
 }
 
 function withPage<T>(props: object) {
   return function(
     Component: React.ComponentType<any> | React.FC<any> | any,
     page: Page,
+    Wrapper: any = page.contentWrapper || ContentWrapper,
   ) {
     if (Component === false) return <></>
-
     return (
-      <MainPanel
-        style={{
-          maxWidth: page.contentOptions.maxWidth,
-          flex: page.contentOptions.columns || 1,
-        }}
-      >
-        {page.headerOptions.visible && <Header page={page} />}
-        <ContentWrapper>
-          <Component {...props} page={page} />
-        </ContentWrapper>
-      </MainPanel>
+      <Trigger page={page}>
+        <MainPanel
+          style={{
+            maxWidth: page.contentOptions.maxWidth,
+            flex: page.contentOptions.columns || 1,
+          }}
+        >
+          {page.headerOptions.visible && <Header page={page} />}
+          <Wrapper>
+            <Component {...props} page={page} />
+          </Wrapper>
+        </MainPanel>
+      </Trigger>
     )
+  }
+}
+
+class Trigger extends React.Component {
+  componentDidMount() {
+    // @ts-ignore
+    this.props.page.setFocus({ isFocus: true })
+  }
+  render() {
+    return this.props.children
   }
 }
 
@@ -115,6 +136,8 @@ const StyledTopNav = styled(Top)`
   flex-direction: row;
   align-items: center;
 `
+const Logo = styled.div``
+const Breadcrumb = styled.div``
 const ViewPortWrap = styled(ViewPort)`
   background-color: #fff;
 `
@@ -137,6 +160,11 @@ export const ContentWrapper = styled.div`
   border-radius: 8px;
   box-sizing: border-box;
   animation: ${transform} 0.3s;
+  ${(props: { masterDataActived: boolean }) =>
+    props.masterDataActived &&
+    css`
+      padding: 0;
+    `}
 `
 
 const RouterLayout = styled.div`
@@ -147,4 +175,39 @@ const RouterLayout = styled.div`
       align-items: top;
       flex-direction: row;
     `}
+`
+
+const GlobalStyle = createGlobalStyle`
+  .scrollbar {
+    background-color: #F5F5F5;
+    float: left;
+    height: 300px;
+    margin-bottom: 25px;
+    margin-left: 22px;
+    margin-top: 40px;
+    width: 65px;
+      overflow-y: scroll;
+  }
+
+  .force-overflow {
+    min-height: 450px;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
 `

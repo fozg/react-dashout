@@ -24,7 +24,8 @@ export interface INavigationOptions {
 export interface IContentOptions {
   maxWidth?: number | string,
   horizontal?: boolean,
-  columns?: number
+  columns?: number,
+  masterData?: boolean
 }
 
 interface IHeaderOptions {
@@ -40,6 +41,7 @@ interface IPageConstructor {
   parent?: Page | Root;
   readonly children?: Array<Page>;
   component?: React.ComponentType | React.SFC<any> | boolean;
+  contentWrapper?: React.ComponentType | React.SFC<any>;
   exact?: boolean;
   navigationOptions?: INavigationOptions,
   contentOptions?: IContentOptions;
@@ -66,13 +68,15 @@ export default class Page implements IPage {
   navigationOptions: INavigationOptions;
   contentOptions: IContentOptions;
   headerOptions: IHeaderOptions;
+  contentWrapper?: React.ComponentType | React.SFC<any>;
 
-  constructor({ key, title, path, parent, component, exact = false, navigationOptions, contentOptions, headerOptions }: IPageConstructor) {
+  constructor({ key, title, path, parent, component, exact = false, navigationOptions, contentOptions, headerOptions, contentWrapper }: IPageConstructor) {
     this.key = key;
     this.title = title;
     this.path = path;
     this.parent = parent ? parent : (window as W).AppService.getRoot();
     this.component = component !== false ? (component || DefaultComponent) : false;
+    this.contentWrapper = contentWrapper;
     this.exact = exact;
     this.navigationOptions = {
       visible: true,
@@ -87,13 +91,37 @@ export default class Page implements IPage {
     this.headerOptions = { visible: true, title: this.title, ...headerOptions ? headerOptions : {} }
 
     this.children = new LightState({
-      pages: []
+      pages: [],
+      isFocus: false
     })
     this.parent.addPage(this)
   }
 
   addToSite() {
 
+  }
+
+  useFocus = () => {
+    return this.children.useStore((state: any) => (state.isFocus))
+  }
+
+  async setFocus({ context = this, lastContext, isFocus = true, isWayDown = undefined }: { context?: Page, lastContext?: Page, isFocus?: boolean, isWayDown?: boolean }) {
+    this.children.setState(() => ({ isFocus: isFocus }));
+    // reset all other page to false
+    if (isWayDown === undefined) {
+      this.children.getState('pages').forEach((page: Page) => {
+        page.setFocus({ isFocus: false, isWayDown: true })
+      })
+      this.parent.setFocus({ context: context, lastContext: this, isFocus: false, isWayDown: false })
+    } else {
+      if (isWayDown) {
+        this.children.getState('pages').forEach((page: Page) => {
+          page.setFocus({ isFocus: false, isWayDown: true })
+        })
+      } else {
+        this.parent.setFocus({ context: context, lastContext: this, isFocus: false, isWayDown: false })
+      }
+    }
   }
 
   getPath(): string {

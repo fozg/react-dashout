@@ -18,11 +18,14 @@ export enum DashoutModelType {
 export default class Root implements IRoot {
   readonly rootState: LightState;
   private dashoutConfig: IDashoutConfig
+  key: string
 
   constructor(initConfig: IDashoutConfig) {
+    this.key = 'root'
     this.dashoutConfig = initConfig;
     this.rootState = new LightState({
-      pages: []
+      pages: [],
+      activePage: null
     });
   }
 
@@ -41,6 +44,10 @@ export default class Root implements IRoot {
     return this.rootState.useStore((state: any) => (state.pages))
   }
 
+  useActivePage(): Page {
+    return this.rootState.useStore((state: any) => (state.activePage))
+  }
+
   getPath(): string {
     return ''
   }
@@ -52,4 +59,13 @@ export default class Root implements IRoot {
   getDashoutConfig(): IDashoutConfig {
     return this.dashoutConfig
   }
+
+  setFocus({ context, lastContext, isFocus, isWayDown }: { context: Page, lastContext: Page, isFocus: boolean, isWayDown: boolean }) {
+  this.rootState.setState({ activePage: context })
+  this.rootState.getState('pages').forEach((page: Page) => {
+    if (lastContext.key !== page.key) {
+      page.setFocus({context, isFocus: false, isWayDown: true})
+    }
+  })
+}
 }

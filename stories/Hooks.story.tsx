@@ -10,6 +10,7 @@ import { initializeIcons } from '@uifabric/icons'
 import List from './components/List'
 // @ts-ignore
 import ViewDetail from './components/ViewDetail'
+import MasterDataWrapper from './components/MasterDataWrapper'
 
 initializeIcons()
 
@@ -108,23 +109,27 @@ const onLayoutReady = (root: Root) => {
     title: 'Analytics',
     path: '/analytics',
     contentOptions: {
+      masterData: true,
       maxWidth: 1000,
       horizontal: true,
-      columns: 1
+      columns: 1,
     },
     navigationOptions: {
       icon: <Icon iconName="AnalyticsView" />,
     },
     component: List,
     parent: DashBoardPage,
+    contentWrapper: MasterDataWrapper,
   })
   new Page({
     key: 'ViewDetail',
     title: 'View detail',
     path: '/:id',
     contentOptions: {
+      masterData: true,
+
       // maxWidth: 1000,
-      columns: 3
+      columns: 3,
     },
     navigationOptions: {
       icon: <Icon iconName="AnalyticsView" />,
