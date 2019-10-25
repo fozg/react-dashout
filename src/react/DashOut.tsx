@@ -54,10 +54,12 @@ class DashOut extends React.Component<Props> {
 
 function Wrap({ root, ...rest }: { root: Root }) {
   var pages = root.usePages()
+  var isMasterLayoutEnable = root.useMasterLayoutEnabled()
   return (
     <Layout
       {...rest}
       pages={pages}
+      className={isMasterLayoutEnable ? "MasterLayout" : ""}
       left={
         <>
           {pages &&

@@ -22,7 +22,8 @@ export interface INavigationOptions {
 }
 
 export interface IContentOptions {
-  maxWidth?: number | string
+  maxWidth?: number | string,
+  layout?: string
 }
 
 interface IHeaderOptions {

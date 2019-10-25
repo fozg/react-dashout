@@ -1,5 +1,5 @@
 import LightState from 'react-light-state';
-import Page from './Page';
+import Page, { IContentOptions } from './Page';
 import { IDashoutConfig } from './AppServices';
 
 interface IRoot {
@@ -18,11 +18,14 @@ export enum DashoutModelType {
 export default class Root implements IRoot {
   readonly rootState: LightState;
   private dashoutConfig: IDashoutConfig
+  contentOptions?: IContentOptions
 
   constructor(initConfig: IDashoutConfig) {
     this.dashoutConfig = initConfig;
+    this.contentOptions = {}
     this.rootState = new LightState({
-      pages: []
+      pages: [],
+      MasterLayoutEnabled: false
     });
   }
 
@@ -51,5 +54,13 @@ export default class Root implements IRoot {
 
   getDashoutConfig(): IDashoutConfig {
     return this.dashoutConfig
+  }
+
+  setMasterLayoutEnabled(value: boolean) {
+    this.rootState.setState({ MasterLayoutEnabled: value })
+  }
+
+  useMasterLayoutEnabled() {
+    return this.rootState.useStore((state: any) => (state.MasterLayoutEnabled))
   }
 }

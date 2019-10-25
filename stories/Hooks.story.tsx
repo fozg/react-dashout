@@ -6,6 +6,7 @@ import Page from '../src/models/Page'
 import Root from '../src/models/Root'
 import { Icon } from 'office-ui-fabric-react/lib/Icon'
 import { initializeIcons } from '@uifabric/icons'
+import Listing from './components/List'
 initializeIcons()
 
 export type W = (typeof window) & {
@@ -98,20 +99,36 @@ const onLayoutReady = (root: Root) => {
     component: false,
     headerOptions: { visible: false },
   })
-  new Page({
+  var analytics = new Page({
     key: 'Analytics',
     title: 'Analytics',
-    path: '',
-    exact: true,
+    path: '/analytics',
     contentOptions: {
       maxWidth: 1000,
+      layout: "MasterLayout"
+    },
+    navigationOptions: {
+      icon: <Icon iconName="AnalyticsView" />,
+    },
+    component: (props: any) => <Listing />,
+    parent: DashBoardPage,
+  })
+  new Page({
+    key: 'details',
+    title: 'Details',
+    path: '/details',
+    exact: true,
+    contentOptions: {
+      // maxWidth: 1000,
+        // layout: "MasterLayout"
     },
     navigationOptions: {
       icon: <Icon iconName="AnalyticsView" />,
     },
     component: (props: any) => <TestComp title="overview" {...props} />,
-    parent: DashBoardPage,
+    parent: analytics,
   })
+
   new Page({
     key: 'C',
     title: 'Sales',
@@ -214,7 +231,7 @@ const onLayoutReady = (root: Root) => {
 const WrapComponent = () => {
   return (
     <Dashout
-      defaultRoute="/dashboard"
+      defaultRoute="/dashboard/analytics"
       logo={<strong style={{ paddingLeft: 10 }}>Dashout Demo</strong>}
       onReady={onLayoutReady}
       config={{

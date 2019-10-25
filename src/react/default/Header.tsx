@@ -3,11 +3,16 @@ import styled, { keyframes } from 'styled-components'
 import { Page } from '../..'
 import Breakcrumb from './Breakcrumb'
 
-const Header: React.FC<{ page: Page }> = ({ page, children }) => {
+const Header: React.FC<{ page: Page; parentLayout?: string }> = ({
+  page,
+  parentLayout,
+  children,
+}) => {
   return (
     <Wrap>
       <AnimatedContent>
         <Breakcrumb page={page} />
+        {parentLayout !== 'MasterLayout' && <Back>Back</Back>}
         <Row>
           <div>
             <Title>{page.title}</Title>
@@ -30,9 +35,18 @@ const animate = keyframes`
 const AnimatedContent = styled.div`
   animation: ${animate} 0.3s;
 `
+const Back = styled.div`
+  display: none;
+  font-weight: 700;
+`
 const Wrap = styled.div`
   padding: 10px 20px;
   overflow: hidden;
+  .MasterLayout & {
+    ${Back} {
+      display: block;
+    }
+  }
 `
 const Row = styled.div`
   display: flex;
