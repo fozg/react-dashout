@@ -1,17 +1,15 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
 import { Page } from '../..'
-import Breakcrumb from './Breakcrumb'
 
 const Header: React.FC<{ page: Page; parentLayout?: string }> = ({
   page,
   parentLayout,
-  children,
+  // children,
 }) => {
   return (
     <Wrap>
       <AnimatedContent>
-        <Breakcrumb page={page} />
         {parentLayout !== 'MasterLayout' && <Back>Back</Back>}
         <Row>
           <div>

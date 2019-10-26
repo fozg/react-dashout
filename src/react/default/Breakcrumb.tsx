@@ -1,11 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Page } from '../..'
+import Root from '../../models/Root'
 
-const Breakcrumb: React.FC<{ page: Page }> = ({ page }) => {
+const Breakcrumb: React.FC<{ root: Root }> = ({ root }) => {
+  const activePage = root.useActivePage()
   return (
     <Row>
-      <Path>{page.getPath()}</Path>
+      <Path>
+        {activePage &&
+          activePage
+            .getPathPages()
+            .map((item, idx) => <Item>{item.title}</Item>)}
+      </Path>
     </Row>
   )
 }
@@ -20,4 +26,7 @@ const Row = styled.div`
 const Path = styled.span`
   color: #aaa;
   font-size: 12px;
+`
+const Item = styled.div`
+  
 `

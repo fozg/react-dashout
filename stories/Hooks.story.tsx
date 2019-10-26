@@ -7,6 +7,8 @@ import Root from '../src/models/Root'
 import { Icon } from 'office-ui-fabric-react/lib/Icon'
 import { initializeIcons } from '@uifabric/icons'
 import Listing from './components/List'
+import Detail from './components/Detail'
+
 initializeIcons()
 
 export type W = (typeof window) & {
@@ -27,10 +29,17 @@ const Button = styled.div`
     background-color: #ddd;
   }
 `
+const Card = styled.div`
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  margin: 0 20px;
+`
 
 function TestComp({ title, ...props }: { title?: string; page: Page }) {
   return (
-    <div>
+    <Card>
       <code>
         This is <b>{title}</b>
       </code>
@@ -38,7 +47,7 @@ function TestComp({ title, ...props }: { title?: string; page: Page }) {
       <code>and path is: {props.page.getPath()}</code>
       <div></div>
       <pre>testing...</pre>
-    </div>
+    </Card>
   )
 }
 
@@ -105,12 +114,12 @@ const onLayoutReady = (root: Root) => {
     path: '/analytics',
     contentOptions: {
       maxWidth: 1000,
-      layout: "MasterLayout"
+      layout: 'MasterLayout',
     },
     navigationOptions: {
       icon: <Icon iconName="AnalyticsView" />,
     },
-    component: (props: any) => <Listing />,
+    component: Listing,
     parent: DashBoardPage,
   })
   new Page({
@@ -120,12 +129,12 @@ const onLayoutReady = (root: Root) => {
     exact: true,
     contentOptions: {
       // maxWidth: 1000,
-        // layout: "MasterLayout"
+      // layout: "MasterLayout"
     },
     navigationOptions: {
       icon: <Icon iconName="AnalyticsView" />,
     },
-    component: (props: any) => <TestComp title="overview" {...props} />,
+    component: Detail,
     parent: analytics,
   })
 

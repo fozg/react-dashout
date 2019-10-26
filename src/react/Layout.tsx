@@ -2,12 +2,12 @@ import React, { ReactElement } from 'react'
 import styled, { keyframes, CSSProperties } from 'styled-components'
 import { Fill, ViewPort, Top, LeftResizable } from 'react-spaces'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
-// import { Service } from './DashOut'
 import Page from '../models/Page'
 import DefaultLogo from './default/DefaultLogo'
 import Header from './default/Header'
-import { MasterLayout, MasterLayouInner } from './default/_layouts/MasterLayout'
-import { W } from '../models/AppServices'
+import { MasterLayout } from './default/_layouts/MasterLayout'
+import Breakcrumb from './default/Breakcrumb'
+import Root from '../models/Root'
 
 type Props = {
   left?: ReactElement
@@ -16,6 +16,7 @@ type Props = {
   topNavStyles?: CSSProperties
   defaultRoute?: string
   className: string
+  root: Root
 }
 
 const Layout: React.FC<Props> = ({
@@ -25,6 +26,7 @@ const Layout: React.FC<Props> = ({
   topNavStyles = {},
   defaultRoute,
   className,
+  root
 }) => {
   // var site = Service.getRoot()
   // const pages = site.usePages()
@@ -34,7 +36,8 @@ const Layout: React.FC<Props> = ({
       {defaultRoute && <Redirect exact from="/" to={defaultRoute} />}
       <ViewPortWrap className={className}>
         <StyledTopNav size="50px" style={topNavStyles}>
-          {logo}
+          <LogoWrap>{logo}</LogoWrap>
+          <Breakcrumb root={root}></Breakcrumb>
         </StyledTopNav>
         <ViewPort>
           <LeftResizable
@@ -108,13 +111,11 @@ function withPage<T>(props: any) {
     //   )
     const parentLayout =
       page.parent.contentOptions && page.parent.contentOptions.layout
-    console.log(props.match.path, page.parent.getPath())
     const isMasterLayoutActive =
       props.match.path !== page.parent.getPath() &&
       parentLayout === 'MasterLayout'
-    ;(window as W).AppService.getRoot().setMasterLayoutEnabled(
-      isMasterLayoutActive,
-    )
+    page.getRoot().setMasterLayoutEnabled(isMasterLayoutActive)
+    page.setActivePage();
 
     return (
       <MainPanel
@@ -165,4 +166,7 @@ export const ContentWrapper = styled.div`
   border-radius: 8px;
   box-sizing: border-box;
   animation: ${transform} 0.3s;
+`
+const LogoWrap = styled.div`
+  width: 400px;
 `

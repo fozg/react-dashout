@@ -59,6 +59,7 @@ function Wrap({ root, ...rest }: { root: Root }) {
     <Layout
       {...rest}
       pages={pages}
+      root={root}
       className={isMasterLayoutEnable ? "MasterLayout" : ""}
       left={
         <>
