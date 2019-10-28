@@ -41,22 +41,22 @@ const Card = styled.div`
   padding: 20px 0;
   margin: 20px auto;
   border-radius: 8px;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
-    ${(props: CardProps) =>
-      props.isMasterLayoutEnabled &&
-      css`
-        padding: 0;
-        border-radius: 0;
-        margin: 0;
-        background-color: transparent;
-        box-shadow: none;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 3px -1px;
+  ${(props: CardProps) =>
+    props.isMasterLayoutEnabled &&
+    css`
+      padding: 0;
+      border-radius: 0;
+      margin: 0;
+      background-color: transparent;
+      box-shadow: none;
 
-        ${ListItem} {
-          padding: 8px 10px;
-          border-bottom-color: #ddd;
-          &:hover {
-            background-color: #ddd;
-          }
+      ${ListItem} {
+        padding: 8px 10px;
+        border-bottom-color: #ddd;
+        &:hover {
+          background-color: #ddd;
         }
-      `};
+      }
+    `};
 `
