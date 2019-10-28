@@ -111,7 +111,7 @@ const onLayoutReady = (root: Root) => {
   var analytics = new Page({
     key: 'Analytics',
     title: 'Analytics',
-    path: '/analytics',
+    path: '/a',
     contentOptions: {
       maxWidth: 1000,
       layout: 'MasterLayout',
@@ -240,7 +240,7 @@ const onLayoutReady = (root: Root) => {
 const WrapComponent = () => {
   return (
     <Dashout
-      defaultRoute="/dashboard/analytics"
+      defaultRoute="/dashboard/a/details"
       logo={<strong style={{ paddingLeft: 10 }}>Dashout Demo</strong>}
       onReady={onLayoutReady}
       config={{

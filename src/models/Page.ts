@@ -113,7 +113,7 @@ export default class Page implements IPage {
   }
 
   getPathPages(): Array<Page> {
-    return [this, ...this.parent.getPathPages()].reverse()
+    return [ ...this.parent.getPathPages(), this]
   }
 
   addPage(page: Page) {
@@ -160,8 +160,8 @@ export default class Page implements IPage {
     return this.parent.getDashoutConfig()
   }
 
-  getRoot(): Root {
-    return this.parent.getRoot()
+  get Root():Root {
+    return this.parent.Root;
   }
 
   setActivePage(context: Page = this): void {

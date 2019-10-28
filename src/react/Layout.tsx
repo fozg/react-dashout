@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import styled, { keyframes, CSSProperties } from 'styled-components'
 import { Fill, ViewPort, Top, LeftResizable } from 'react-spaces'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
@@ -26,7 +26,7 @@ const Layout: React.FC<Props> = ({
   topNavStyles = {},
   defaultRoute,
   className,
-  root
+  root,
 }) => {
   // var site = Service.getRoot()
   // const pages = site.usePages()
@@ -39,7 +39,8 @@ const Layout: React.FC<Props> = ({
           <LogoWrap>{logo}</LogoWrap>
           <Breakcrumb root={root}></Breakcrumb>
         </StyledTopNav>
-        <ViewPort>
+
+        <Fill>
           <LeftResizable
             scrollable
             maximumSize={500}
@@ -59,7 +60,7 @@ const Layout: React.FC<Props> = ({
               </div>
             ))}
           </Fill>
-        </ViewPort>
+        </Fill>
       </ViewPortWrap>
     </Router>
   )
@@ -74,7 +75,9 @@ const BuildRoute = ({ page }: { page: Page }) => {
     ) : (
       <Route
         path={page.getPath()}
-        render={(props: object) => withPage(props)(page.component, page)}
+        render={(props: object) => (
+          withPage({props, Component: page.component, page})
+        )}
         exact={page.exact}
       />
     )
@@ -92,34 +95,30 @@ const BuildRoute = ({ page }: { page: Page }) => {
   )
 }
 
-function withPage<T>(props: any) {
-  return function(
-    Component: React.ComponentType<any> | React.FC<any> | any,
-    page: Page,
-  ) {
+// class WithPage extends React.Component<Props2> {
+function withPage({props, Component, page}: any) {
+    // const { props, Component, page } = this.props
     if (Component === false) return <></>
-
-    // const Inner = () =>
-    //   page.contentOptions.layout === 'MasterLayout' ? (
-    //     <MasterLayouInner>
-    //       <Component {...props} page={page} />
-    //     </MasterLayouInner>
-    //   ) : (
-    //     <ContentWrapper>
-    //       <Component {...props} page={page} />
-    //     </ContentWrapper>
-    //   )
     const parentLayout =
       page.parent.contentOptions && page.parent.contentOptions.layout
-    const isMasterLayoutActive =
-      props.match.path !== page.parent.getPath() &&
-      parentLayout === 'MasterLayout'
-    page.getRoot().setMasterLayoutEnabled(isMasterLayoutActive)
-    page.setActivePage();
+      page.setActivePage()
+
+    // page.getRoot().setMasterLayoutEnabled(isMasterLayoutActive)
 
     return (
-      <MainPanel
-        className={isMasterLayoutActive ? 'MasterLayout' : ''}
+      // const Inner = () =>
+      //   page.contentOptions.layout === 'MasterLayout' ? (
+      //     <MasterLayouInner>
+      //       <Component {...props} page={page} />
+      //     </MasterLayouInner>
+      //   ) : (
+      //     <ContentWrapper>
+      //       <Component {...props} page={page} />
+      //     </ContentWrapper>
+      //   )
+
+      <MainPanelStyled
+        // className={isMasterLayoutActive ? 'MasterLayout' : ''}
         style={{
           maxWidth: page.contentOptions.maxWidth,
           ...(parentLayout === 'MasterLayout'
@@ -127,15 +126,13 @@ function withPage<T>(props: any) {
             : {}),
         }}
       >
-        {page.headerOptions.visible && (
-          <Header page={page} parentLayout={parentLayout} />
-        )}
+        {page.headerOptions.visible && <Header page={page} />}
         {/* <Inner /> */}
         <Component {...props} page={page} />
-      </MainPanel>
+      </MainPanelStyled>
     )
   }
-}
+// }
 
 export default Layout
 
@@ -149,7 +146,7 @@ const StyledTopNav = styled(Top)`
 const ViewPortWrap = styled(ViewPort)`
   background-color: #fff;
 `
-const MainPanel = styled.div`
+const MainPanelStyled = styled.div`
   margin: 0 auto;
 `
 const transform = keyframes`

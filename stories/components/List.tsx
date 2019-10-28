@@ -1,14 +1,22 @@
-import { default as React } from 'react'
+import { default as React, useState, useEffect } from 'react'
 import styled, { css } from 'styled-components'
 import { Page } from '../../src'
 
 type Props = { page: Page }
 
 function Listing({ page }: Props) {
-  console.log(page)
-  const isMasterLayoutEnabled = page.getRoot().useMasterLayoutEnabled()
+  const [test, setTest] = useState(false)
+  const isMasterLayoutEnabled = page.Root.useMasterLayoutEnabled()
+  useEffect(() => {
+    setTimeout(() => {
+      setTest(true)
+    }, 1000)
+  }, [])
+
   return (
     <Card isMasterLayoutEnabled={isMasterLayoutEnabled}>
+      {isMasterLayoutEnabled ? 'yes' : 'no'}
+      {!test ? 'test false' : 'test true'}
       {Array(20)
         .fill(0)
         .map((item: any, idx: number) => (
@@ -41,15 +49,15 @@ const Card = styled.div`
   padding: 20px 0;
   margin: 20px auto;
   border-radius: 8px;
-  box-shadow: 0 2px 3px rgba(0,0,0,.1)
-  ${(props: CardProps) =>
-    props.isMasterLayoutEnabled &&
-    css`
-      padding: 0;
-      border-radius: 0;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1)
+    ${(props: CardProps) =>
+      props.isMasterLayoutEnabled &&
+      css`
+        padding: 0;
+        border-radius: 0;
 
-      ${ListItem} {
-        padding: 8px 10px;
-      }
-    `}
+        ${ListItem} {
+          padding: 8px 10px;
+        }
+      `};
 `

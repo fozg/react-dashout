@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 import Root from '../../models/Root'
 
 const Breakcrumb: React.FC<{ root: Root }> = ({ root }) => {
@@ -10,7 +11,7 @@ const Breakcrumb: React.FC<{ root: Root }> = ({ root }) => {
         {activePage &&
           activePage
             .getPathPages()
-            .map((item, idx) => <Item>{item.title}</Item>)}
+            .map((item, idx) => <Item to={item.getPath()} key={item.key}>{item.title}</Item>)}
       </Path>
     </Row>
   )
@@ -27,6 +28,4 @@ const Path = styled.span`
   color: #aaa;
   font-size: 12px;
 `
-const Item = styled.div`
-  
-`
+const Item = styled(Link)``

@@ -65,12 +65,17 @@ export default class Root implements IRoot {
     return this.rootState.useStore((state: any) => state.MasterLayoutEnabled)
   }
 
-  getRoot(): Root {
+  get Root(): Root {
     return this
   }
 
   setActivePage(context: Page): void {
-    this.rootState.setState({ activePage: context })
+    this.rootState.setState({
+      activePage: context,
+      MasterLayoutEnabled:
+        context.parent.contentOptions &&
+        context.parent.contentOptions.layout === 'MasterLayout',
+    })
   }
 
   useActivePage(): Page | null {
