@@ -1,19 +1,36 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
+import { Link } from 'react-router-dom'
 import { Page } from '../..'
-import Breakcrumb from './Breakcrumb'
 
-const Header: React.FC<{ page: Page }> = ({ page, children }) => {
+const DefaultHeaderComponentMasterLayout = ({
+  title,
+  link,
+}: {
+  title: String
+  link: string
+}) => <Link to={link}>Go back ({title})</Link>
+
+const Header: React.FC<{ page: Page }> = ({ page }) => {
+  const isMasterLayout = page.Root.useMasterLayoutEnabled()
   return (
     <Wrap>
       <AnimatedContent>
-        <Breakcrumb page={page} />
-        <Row>
-          <div>
-            <Title>{page.title}</Title>
-          </div>
-          <Controls>{page.headerOptions.controls}</Controls>
-        </Row>
+        {isMasterLayout &&
+        page.contentOptions &&
+        page.contentOptions.layout === 'MasterLayout' ? (
+          <DefaultHeaderComponentMasterLayout
+            title={page.title}
+            link={page.getPath()}
+          />
+        ) : (
+          <Row>
+            <div>
+              <Title>{page.title}</Title>
+            </div>
+            <Controls>{page.headerOptions.controls}</Controls>
+          </Row>
+        )}
       </AnimatedContent>
     </Wrap>
   )

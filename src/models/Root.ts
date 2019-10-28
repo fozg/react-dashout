@@ -1,6 +1,6 @@
-import LightState from 'react-light-state';
-import Page from './Page';
-import { IDashoutConfig } from './AppServices';
+import LightState from 'react-light-state'
+import Page, { IContentOptions } from './Page'
+import { IDashoutConfig } from './AppServices'
 
 interface IRoot {
   rootState: LightState
@@ -11,34 +11,38 @@ interface IRoot {
 }
 
 export enum DashoutModelType {
-  Page = "Page",
-  Root = "Root"
+  Page = 'Page',
+  Root = 'Root',
 }
 
 export default class Root implements IRoot {
-  readonly rootState: LightState;
+  readonly rootState: LightState
   private dashoutConfig: IDashoutConfig
+  contentOptions?: IContentOptions
 
   constructor(initConfig: IDashoutConfig) {
-    this.dashoutConfig = initConfig;
+    this.dashoutConfig = initConfig
+    this.contentOptions = {}
     this.rootState = new LightState({
-      pages: []
-    });
+      pages: [],
+      MasterLayoutEnabled: false,
+      activePage: null,
+    })
   }
 
   addPage(page: Page) {
-    page.parent = this;
+    page.parent = this
     this.rootState.setState({
-      pages: this.rootState.getState('pages').concat(page)
+      pages: this.rootState.getState('pages').concat(page),
     })
   }
 
   removePage(page: Page) {
-    throw new Error("Not implement.")
+    throw new Error('Not implement.')
   }
 
   usePages(): Array<Page> {
-    return this.rootState.useStore((state: any) => (state.pages))
+    return this.rootState.useStore((state: any) => state.pages)
   }
 
   getPath(): string {
@@ -51,5 +55,34 @@ export default class Root implements IRoot {
 
   getDashoutConfig(): IDashoutConfig {
     return this.dashoutConfig
+  }
+
+  setMasterLayoutEnabled(value: boolean) {
+    this.rootState.setState({ MasterLayoutEnabled: value })
+  }
+
+  useMasterLayoutEnabled() {
+    return this.rootState.useStore((state: any) => state.MasterLayoutEnabled)
+  }
+
+  get Root(): Root {
+    return this
+  }
+
+  setActivePage(context: Page): void {
+    this.rootState.setState({
+      activePage: context,
+      MasterLayoutEnabled:
+        context.parent.contentOptions &&
+        context.parent.contentOptions.layout === 'MasterLayout',
+    })
+  }
+
+  useActivePage(): Page | null {
+    return this.rootState.useStore((state: any) => state.activePage)
+  }
+
+  getPathPages(): Array<Page> {
+    return []
   }
 }
