@@ -1,5 +1,5 @@
-import React, { ReactElement, useEffect } from 'react'
-import styled, { keyframes, CSSProperties } from 'styled-components'
+import React, { ReactElement } from 'react'
+import styled, { CSSProperties } from 'styled-components'
 import { Fill, ViewPort, Top, LeftResizable } from 'react-spaces'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import Page from '../models/Page'
@@ -75,9 +75,9 @@ const BuildRoute = ({ page }: { page: Page }) => {
     ) : (
       <Route
         path={page.getPath()}
-        render={(props: object) => (
-          withPage({props, Component: page.component, page})
-        )}
+        render={(props: object) =>
+          withPage({ props, Component: page.component, page })
+        }
         exact={page.exact}
       />
     )
@@ -95,44 +95,27 @@ const BuildRoute = ({ page }: { page: Page }) => {
   )
 }
 
-// class WithPage extends React.Component<Props2> {
-function withPage({props, Component, page}: any) {
-    // const { props, Component, page } = this.props
-    if (Component === false) return <></>
-    const parentLayout =
-      page.parent.contentOptions && page.parent.contentOptions.layout
-      page.setActivePage()
+function withPage({ props, Component, page }: any) {
+  if (Component === false) return <></>
+  const parentLayout =
+    page.parent.contentOptions && page.parent.contentOptions.layout
+  page.setActivePage()
 
-    // page.getRoot().setMasterLayoutEnabled(isMasterLayoutActive)
-
-    return (
-      // const Inner = () =>
-      //   page.contentOptions.layout === 'MasterLayout' ? (
-      //     <MasterLayouInner>
-      //       <Component {...props} page={page} />
-      //     </MasterLayouInner>
-      //   ) : (
-      //     <ContentWrapper>
-      //       <Component {...props} page={page} />
-      //     </ContentWrapper>
-      //   )
-
-      <MainPanelStyled
-        // className={isMasterLayoutActive ? 'MasterLayout' : ''}
-        style={{
-          maxWidth: page.contentOptions.maxWidth,
-          ...(parentLayout === 'MasterLayout'
-            ? { width: 'calc(100% - 300px)' }
-            : {}),
-        }}
-      >
-        {page.headerOptions.visible && <Header page={page} />}
-        {/* <Inner /> */}
-        <Component {...props} page={page} />
-      </MainPanelStyled>
-    )
-  }
-// }
+  return (
+    <MainPanelStyled
+      style={{
+        maxWidth: page.contentOptions.maxWidth,
+        ...(parentLayout === 'MasterLayout'
+          ? { width: 'calc(100% - 300px)' }
+          : {}),
+      }}
+    >
+      {page.headerOptions.visible && <Header page={page} />}
+      {/* <Inner /> */}
+      <Component {...props} page={page} />
+    </MainPanelStyled>
+  )
+}
 
 export default Layout
 
@@ -149,21 +132,6 @@ const ViewPortWrap = styled(ViewPort)`
 const MainPanelStyled = styled.div`
   margin: 0 auto;
 `
-const transform = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(50px)
-  }
-`
-export const ContentWrapper = styled.div`
-  margin: 0 10px;
-  background-color: #fff;
-  box-shadow: 0 2px 3px -1px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  border-radius: 8px;
-  box-sizing: border-box;
-  animation: ${transform} 0.3s;
-`
 const LogoWrap = styled.div`
-  width: 400px;
+  width: 280px;
 `

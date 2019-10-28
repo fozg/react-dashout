@@ -1,22 +1,36 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
+import { Link } from 'react-router-dom'
 import { Page } from '../..'
 
-const Header: React.FC<{ page: Page; parentLayout?: string }> = ({
-  page,
-  parentLayout,
-  // children,
-}) => {
+const DefaultHeaderComponentMasterLayout = ({
+  title,
+  link,
+}: {
+  title: String
+  link: string
+}) => <Link to={link}>Go back ({title})</Link>
+
+const Header: React.FC<{ page: Page }> = ({ page }) => {
+  const isMasterLayout = page.Root.useMasterLayoutEnabled()
   return (
     <Wrap>
       <AnimatedContent>
-        {parentLayout !== 'MasterLayout' && <Back>Back</Back>}
-        <Row>
-          <div>
-            <Title>{page.title}</Title>
-          </div>
-          <Controls>{page.headerOptions.controls}</Controls>
-        </Row>
+        {isMasterLayout &&
+        page.contentOptions &&
+        page.contentOptions.layout === 'MasterLayout' ? (
+          <DefaultHeaderComponentMasterLayout
+            title={page.title}
+            link={page.getPath()}
+          />
+        ) : (
+          <Row>
+            <div>
+              <Title>{page.title}</Title>
+            </div>
+            <Controls>{page.headerOptions.controls}</Controls>
+          </Row>
+        )}
       </AnimatedContent>
     </Wrap>
   )
@@ -33,18 +47,9 @@ const animate = keyframes`
 const AnimatedContent = styled.div`
   animation: ${animate} 0.3s;
 `
-const Back = styled.div`
-  display: none;
-  font-weight: 700;
-`
 const Wrap = styled.div`
   padding: 10px 20px;
   overflow: hidden;
-  .MasterLayout & {
-    ${Back} {
-      display: block;
-    }
-  }
 `
 const Row = styled.div`
   display: flex;

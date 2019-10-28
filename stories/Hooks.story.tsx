@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { storiesOf } from '@storybook/react'
+import { Redirect } from 'react-router-dom'
 import Dashout from '../src'
 import Page from '../src/models/Page'
 import Root from '../src/models/Root'
@@ -105,7 +106,7 @@ const onLayoutReady = (root: Root) => {
     contentOptions: {
       maxWidth: 1000,
     },
-    component: false,
+    component: () => <Redirect to="/dashboard/a" />,
     headerOptions: { visible: false },
   })
   var analytics = new Page({
@@ -240,7 +241,7 @@ const onLayoutReady = (root: Root) => {
 const WrapComponent = () => {
   return (
     <Dashout
-      defaultRoute="/dashboard/a/details"
+      defaultRoute="/dashboard/a"
       logo={<strong style={{ paddingLeft: 10 }}>Dashout Demo</strong>}
       onReady={onLayoutReady}
       config={{
