@@ -3,26 +3,22 @@ import styled, { keyframes } from 'styled-components'
 import { Link } from 'react-router-dom'
 import { Page } from '../..'
 
-const DefaultHeaderComponentMasterLayout = ({
-  title,
-  link,
-}: {
-  title: String
-  link: string
-}) => <Link to={link}>Go back ({title})</Link>
+const DefaultHeaderComponentMasterLayout = ({ page }: { page: Page }) => (
+  <Link to={page.getPath()}>Go back ({page.title})</Link>
+)
 
 const Header: React.FC<{ page: Page }> = ({ page }) => {
   const isMasterLayout = page.Root.useMasterLayoutEnabled()
+  const MasterHeader = page.headerOptions.masterLayoutComponent
+    ? page.headerOptions.masterLayoutComponent
+    : DefaultHeaderComponentMasterLayout
   return (
     <Wrap>
       <AnimatedContent>
         {isMasterLayout &&
         page.contentOptions &&
         page.contentOptions.layout === 'MasterLayout' ? (
-          <DefaultHeaderComponentMasterLayout
-            title={page.title}
-            link={page.getPath()}
-          />
+          <MasterHeader page={page} />
         ) : (
           <Row>
             <div>

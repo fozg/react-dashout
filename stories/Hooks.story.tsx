@@ -120,13 +120,16 @@ const onLayoutReady = (root: Root) => {
     navigationOptions: {
       icon: <Icon iconName="AnalyticsView" />,
     },
+    headerOptions: {
+      // masterLayoutComponent: () => <h3>Hello world</h3>,
+    },
     component: Listing,
     parent: DashBoardPage,
   })
   new Page({
     key: 'details',
     title: 'Details',
-    path: '/details',
+    path: '/:d',
     exact: true,
     contentOptions: {
       // maxWidth: 1000,
@@ -134,6 +137,7 @@ const onLayoutReady = (root: Root) => {
     },
     navigationOptions: {
       icon: <Icon iconName="AnalyticsView" />,
+      visible: false,
     },
     component: Detail,
     parent: analytics,

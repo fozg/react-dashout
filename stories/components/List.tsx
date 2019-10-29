@@ -1,5 +1,7 @@
-import { default as React, useState, useEffect } from 'react'
+import { default as React } from 'react'
 import styled, { css } from 'styled-components'
+import {Link} from 'react-router-dom';
+
 import { Page } from '../../src'
 
 type Props = { page: Page }
@@ -12,7 +14,7 @@ function Listing({ page }: Props) {
       {Array(20)
         .fill(0)
         .map((item: any, idx: number) => (
-          <ListItem key={idx}>This is item number {idx}</ListItem>
+          <ListItem key={idx} to={`/dashboard/a/${idx}`}>This is item number {idx}</ListItem>
         ))}
     </Card>
   )
@@ -24,11 +26,14 @@ type CardProps = {
   isMasterLayoutEnabled: boolean
 }
 
-const ListItem = styled.div`
+const ListItem = styled(Link)`
   border-bottom: 1px solid #eee;
   padding: 20px;
   font-size: 14px;
   cursor: pointer;
+  display: block;
+  text-decoration: none;
+  color: #444;
   &:last-of-type {
     border: none;
   }

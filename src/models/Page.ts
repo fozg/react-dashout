@@ -26,10 +26,12 @@ export interface IContentOptions {
   layout?: string
 }
 
+
 interface IHeaderOptions {
   title?: string
   visible?: boolean
-  controls?: JSX.Element[] | React.ElementType | ComponentType
+  controls?: JSX.Element[] | React.ElementType | ComponentType,
+  masterLayoutComponent?: React.FC
 }
 
 interface IPageConstructor {
