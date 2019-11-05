@@ -245,7 +245,7 @@ const onLayoutReady = (root: Root) => {
 const WrapComponent = () => {
   return (
     <Dashout
-      defaultRoute="/dashboard/a"
+      // defaultRoute="/dashboard/a"
       logo={<strong style={{ paddingLeft: 10 }}>Dashout Demo</strong>}
       onReady={onLayoutReady}
       config={{

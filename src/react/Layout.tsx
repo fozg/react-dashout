@@ -99,7 +99,7 @@ function withPage({ props, Component, page }: any) {
   if (Component === false) return <></>
   const parentLayout =
     page.parent.contentOptions && page.parent.contentOptions.layout
-  page.setActivePage()
+  // page.setActivePage()
 
   return (
     <MainPanelStyled
@@ -110,11 +110,23 @@ function withPage({ props, Component, page }: any) {
           : {}),
       }}
     >
+      <ActivePage page={page} />
       {page.headerOptions.visible && <Header page={page} />}
       {/* <Inner /> */}
       <Component {...props} page={page} />
     </MainPanelStyled>
   )
+}
+
+class ActivePage extends React.Component<{ page: Page }> {
+  componentDidMount() {
+    setTimeout(() => {
+      this.props.page.setActivePage()
+    }, 100)
+  }
+  render() {
+    return <></>
+  }
 }
 
 export default Layout
