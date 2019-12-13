@@ -45,13 +45,14 @@ const StyledLink = styled(NavLink)`
   &:hover {
     background: #ddd;
     color: #000;
+    border-radius: 10px;
   }
 
   &.active:not(.haveChildEmptyPath) {
     font-weight: 700;
     color: #000;
-    background-color: #ddd;
-    box-shadow: 3px 0 0 0 #696969;
+    // background-color: #ddd;
+    // box-shadow: 3px 0 0 0 #696969;
   }
 
   ${(props: { 'data-child': boolean }) =>
@@ -59,7 +60,7 @@ const StyledLink = styled(NavLink)`
     css`
       font-size: 14px;
       &.active {
-        background-color: #ccc;
+        // background-color: #ccc;
       }
     `}
 `

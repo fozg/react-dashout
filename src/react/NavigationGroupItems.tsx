@@ -18,17 +18,20 @@ const isSelected = (page: Page, path: string): boolean => {
   return result
 }
 
-const NavigationGroupItems: React.FC<RouteComponentProps & Props>  = ({
+const NavigationGroupItems: React.FC<RouteComponentProps & Props> = ({
   page,
   level = 0,
   location,
 }) => {
   const childs = page.usePages()
 
-  if (!page.navigationOptions.visible) return <></>;
+  if (!page.navigationOptions.visible) return <></>
 
   return (
-    <Wrapper isSelelected={isSelected(page, location.pathname)}>
+    <Wrapper
+      isSelelected={isSelected(page, location.pathname)}
+      root={level === 0}
+    >
       {page.navigationOptions.component ? (
         page.navigationOptions.component({ page, level })
       ) : (
@@ -52,10 +55,18 @@ const WrapWithrouter = withRouter(NavigationGroupItems)
 export default WrapWithrouter
 
 const Wrapper = styled.div`
-  ${(props: { isSelelected: boolean }) =>
+  ${(props: { isSelelected: boolean; root: boolean }) =>
     props.isSelelected &&
     css`
-      background-color: #e8e8e8;
-      border-right: 3px solid #bbb;
+      background-color: #efefef;
+      // border-right: 3px solid #bbb;
+    `}
+  ${(props: { root: boolean }) =>
+    props.root &&
+    css`
+      margin: 4px 15px;
+      overflow: hidden;
+      border-radius: 10px;
+      padding: 5px;
     `}
 `

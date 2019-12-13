@@ -1,7 +1,6 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { storiesOf } from '@storybook/react'
-import { Redirect } from 'react-router-dom'
 import Dashout from '../src'
 import Page from '../src/models/Page'
 import Root from '../src/models/Root'
@@ -9,6 +8,7 @@ import { Icon } from 'office-ui-fabric-react/lib/Icon'
 import { initializeIcons } from '@uifabric/icons'
 import Listing from './components/List'
 import Detail from './components/Detail'
+import LightState from 'react-light-state'
 
 initializeIcons()
 
@@ -74,6 +74,13 @@ const onAddPageToHome = () => {
   })
 }
 
+const AuthState = new LightState({
+  isLogined: true,
+})
+const onLogoutPress = () => {
+  AuthState.setState({ isLogined: false })
+}
+
 const onLayoutReady = (root: Root) => {
   // (window as W).root = root;
 
@@ -88,6 +95,7 @@ const onLayoutReady = (root: Root) => {
     },
     headerOptions: {
       controls: [
+        <Button onClick={onLogoutPress}>Logout</Button>,
         <Button onClick={onAddPageToHome}>Add New Page to Home</Button>,
         <Button onClick={onAddPageToRoot}>Add New Page to Root</Button>,
       ],
@@ -106,7 +114,7 @@ const onLayoutReady = (root: Root) => {
     contentOptions: {
       maxWidth: 1000,
     },
-    component: () => <Redirect to="/dashboard/a" />,
+    component: () => <></>,
     headerOptions: { visible: false },
   })
   var analytics = new Page({
@@ -233,19 +241,22 @@ const onLayoutReady = (root: Root) => {
     },
     parent: Settings,
   })
-  // new Page({
-  //   key: 'SubTask7-2',
-  //   title: 'Sub Task 7 - 2',
-  //   path: '/sub2',
-  //   navigationOptions: { visible: true, icon: <Icon iconName="CaretRight" />, childPaddingMultiplier: 20 },
-  //   parent: task7,
-  // })
 }
 
+const LoginedRoutes = (
+  <>
+    <h1>Login form</h1>
+  </>
+)
+
 const WrapComponent = () => {
+  const isLogined = AuthState.useStore((state: any) => state.isLogined)
+
   return (
     <Dashout
-      defaultRoute="/dashboard/a"
+      isLogined={isLogined}
+      unauthorizeRoutes={LoginedRoutes}
+      // defaultRoute="/dashboard/a"
       logo={<strong style={{ paddingLeft: 10 }}>Dashout Demo</strong>}
       onReady={onLayoutReady}
       config={{

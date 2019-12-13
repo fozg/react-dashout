@@ -43,7 +43,7 @@ const Item = styled.span`
 const LinkStyled = styled(Link)`
   color: #444;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 13px;
   padding: 1px 6px;
   border-radius: 6px;
   transition: all 0.5s;
