@@ -240,6 +240,17 @@ const onLayoutReady = (root: Root) => {
     parent: Assets,
   })
 
+  new Page({
+    key: 'test-layout',
+    title: 'no layout',
+    path: '/no-layout',
+    layouted: false,
+    navigationOptions: {
+      icon: <Icon iconName="System" />,
+    },
+    component: (props: any) => <TestComp title="Random task" {...props} />,
+  })
+
   var Settings = new Page({
     key: 'Setttings',
     title: 'Settings',
@@ -258,6 +269,7 @@ const onLayoutReady = (root: Root) => {
     },
     parent: Settings,
   })
+
   new Page({
     key: 'ss',
     title: 'System settings',
@@ -285,6 +297,7 @@ const WrapComponent = () => {
       unauthorizeRoutes={LoginedRoutes}
       // defaultRoute="/dashboard/a"
       logo={<strong style={{ paddingLeft: 10 }}>Dashout Demo</strong>}
+      topNavControls={<h5>// </h5>}
       onReady={onLayoutReady}
       config={{
         navigationOptions: { childPaddingMultiplier: 30 },

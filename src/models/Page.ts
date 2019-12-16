@@ -43,6 +43,7 @@ interface IPageConstructor {
   navigationOptions?: INavigationOptions
   contentOptions?: IContentOptions
   headerOptions?: IHeaderOptions
+  layouted?: boolean
 }
 
 interface IPage extends IPageModel {
@@ -65,6 +66,7 @@ export default class Page implements IPage {
   navigationOptions: INavigationOptions
   contentOptions: IContentOptions
   headerOptions: IHeaderOptions
+  layouted: boolean
 
   constructor({
     key,
@@ -76,12 +78,14 @@ export default class Page implements IPage {
     navigationOptions,
     contentOptions,
     headerOptions,
+    layouted = true
   }: IPageConstructor) {
     this.key = key
     this.path = path
     this.parent = parent ? parent : (window as W).AppService.getRoot()
     this.component = component !== false ? component || DefaultComponent : false
     this.exact = exact
+    this.layouted = layouted
     this.navigationOptions = {
       visible: true,
       component: undefined,

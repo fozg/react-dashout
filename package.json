@@ -1,6 +1,6 @@
 {
   "name": "react-dashout",
-  "version": "0.0.13",
+  "version": "0.0.15",
   "description": "Dasboard for React",
   "main": "dist/react-dashout.cjs.js",
   "jsnext:main": "dist/react-dashout.esm.js",
@@ -97,7 +97,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.5.4",
-    "office-ui-fabric-react": "^7.53.0",
     "react-light-state": "^0.0.12",
     "react-router-dom": "^5.1.2",
     "react-spaces": "^0.1.16",
@@ -140,6 +139,7 @@
     "eslint-plugin-flowtype": "^3.11.1",
     "eslint-plugin-import": "^2.18.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
+    "office-ui-fabric-react": "^7.53.0",
     "eslint-plugin-react": "^7.14.2",
     "eslint-plugin-react-hooks": "^1.6.1",
     "intersection-observer": "^0.7.0",

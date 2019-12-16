@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { CSSProperties } from 'styled-components'
 import Page from '../models/Page'
 import NavigationItem from './NavigationGroupItems'
 import Layout from './Layout'
 import AppService, { IDashoutConfig } from '../models/AppServices'
 import Root from '../models/Root'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 export const Service = new AppService()
 
@@ -19,7 +20,8 @@ type Props = {
   defaultRoute?: string
   topNavStyles?: CSSProperties
   isLogined?: boolean
-  unauthorizeRoutes?: React.Component | React.ReactElement
+  unauthorizeRoutes?: ReactElement
+  topNavControls?: ReactElement
 }
 
 // var site = Service.getRoot()
@@ -63,24 +65,25 @@ function Wrap({ root, ...rest }: { root: Root }) {
   var isMasterLayoutEnable = root.useMasterLayoutEnabled()
 
   return (
-    <Layout
-      {...rest}
-      pages={pages}
-      root={root}
-      className={isMasterLayoutEnable ? 'MasterLayout' : ''}
-      left={
-        <>
-          {pages &&
-            pages.map((page: Page) =>
+    <Router>
+      <Layout
+        {...rest}
+        pages={pages}
+        root={root}
+        className={isMasterLayoutEnable ? 'MasterLayout' : ''}
+        left={
+          <>
+            {pages!.map((page: Page) =>
               page.navigationOptions.visible ? (
                 <NavigationItem page={page} key={page.key} />
               ) : (
                 false
               ),
             )}
-        </>
-      }
-    ></Layout>
+          </>
+        }
+      ></Layout>
+    </Router>
   )
 }
 
