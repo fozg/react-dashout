@@ -1,4 +1,4 @@
-import React, { ReactComponentElement } from 'react'
+import React from 'react'
 import { CSSProperties } from 'styled-components'
 import Page from '../models/Page'
 import NavigationItem from './NavigationGroupItems'
@@ -18,8 +18,8 @@ type Props = {
   config?: IDashoutConfig
   defaultRoute?: string
   topNavStyles?: CSSProperties
-  isLogined: boolean
-  unauthorizeRoutes: React.Component | React.ReactElement
+  isLogined?: boolean
+  unauthorizeRoutes?: React.Component | React.ReactElement
 }
 
 // var site = Service.getRoot()

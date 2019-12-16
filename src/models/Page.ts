@@ -7,7 +7,6 @@ import { IDashoutConfig } from './AppServices'
 
 interface IPageModel {
   key: string
-  title: string
   path: string
   parent: Page | Root
   readonly children?: LightState
@@ -26,11 +25,10 @@ export interface IContentOptions {
   layout?: string
 }
 
-
 interface IHeaderOptions {
   title?: string
   visible?: boolean
-  controls?: JSX.Element[] | React.ElementType | ComponentType,
+  controls?: JSX.Element[] | React.ElementType | ComponentType
   masterLayoutComponent?: React.FC
 }
 
@@ -58,10 +56,10 @@ interface IPage extends IPageModel {
  */
 export default class Page implements IPage {
   key: string
-  title: string
   path: string
   parent: Page | Root
   readonly children: LightState
+  readonly state: LightState
   exact?: boolean
   component: React.ComponentType | React.SFC<any> | boolean
   navigationOptions: INavigationOptions
@@ -80,7 +78,6 @@ export default class Page implements IPage {
     headerOptions,
   }: IPageConstructor) {
     this.key = key
-    this.title = title
     this.path = path
     this.parent = parent ? parent : (window as W).AppService.getRoot()
     this.component = component !== false ? component || DefaultComponent : false
@@ -98,7 +95,6 @@ export default class Page implements IPage {
     }
     this.headerOptions = {
       visible: true,
-      title: this.title,
       ...(headerOptions ? headerOptions : {}),
     }
 
@@ -106,6 +102,11 @@ export default class Page implements IPage {
       pages: [],
     })
     this.parent.addPage(this)
+    this.state = new LightState({
+      title,
+      breadcrumbTitle: title,
+      headerTitle: title,
+    })
   }
 
   addToSite() {}
@@ -115,7 +116,7 @@ export default class Page implements IPage {
   }
 
   getPathPages(): Array<Page> {
-    return [ ...this.parent.getPathPages(), this]
+    return [...this.parent.getPathPages(), this]
   }
 
   addPage(page: Page) {
@@ -162,11 +163,31 @@ export default class Page implements IPage {
     return this.parent.getDashoutConfig()
   }
 
-  get Root():Root {
-    return this.parent.Root;
+  get Root(): Root {
+    return this.parent.Root
   }
 
   setActivePage(context: Page = this): void {
     this.parent.setActivePage(context)
+  }
+
+  set title(newTitle: string) {
+    this.state.setState({ title: newTitle })
+  }
+
+  get title() {
+    return this.state.getState('title')
+  }
+
+  set breadcrumbTitle(newTitle: string) {
+    this.state.setState({ breadcrumbTitle: newTitle })
+  }
+
+  get breadcrumbTitle() {
+    return this.state.getState('breadcrumbTitle')
+  }
+
+  useState(): { title: string; breadcrumbTitle: string; headerTitle: string } {
+    return this.state.useStore((state: any) => state)
   }
 }

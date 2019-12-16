@@ -9,6 +9,7 @@ const DefaultHeaderComponentMasterLayout = ({ page }: { page: Page }) => (
 
 const Header: React.FC<{ page: Page }> = ({ page }) => {
   const isMasterLayout = page.Root.useMasterLayoutEnabled()
+  const pageState = page.useState()
   const MasterHeader = page.headerOptions.masterLayoutComponent
     ? page.headerOptions.masterLayoutComponent
     : DefaultHeaderComponentMasterLayout
@@ -22,7 +23,7 @@ const Header: React.FC<{ page: Page }> = ({ page }) => {
         ) : (
           <Row>
             <div>
-              <Title>{page.title}</Title>
+              <Title>{pageState.title}</Title>
             </div>
             <Controls>{page.headerOptions.controls}</Controls>
           </Row>

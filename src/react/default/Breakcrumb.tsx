@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import Root from '../../models/Root'
+import { Page } from '../..'
 
 const Breakcrumb: React.FC<{ root: Root }> = ({ root }) => {
   const activePage = root.useActivePage()
@@ -11,13 +12,18 @@ const Breakcrumb: React.FC<{ root: Root }> = ({ root }) => {
         {activePage &&
           activePage.getPathPages().map((item, idx) => (
             <Item key={item.key}>
-              <LinkStyled to={item.getPath()}>{item.title}</LinkStyled>
+              <Title item={item} />
               <Splash>/</Splash>
             </Item>
           ))}
       </Path>
     </Row>
   )
+}
+
+const Title = ({ item }: { item: Page }) => {
+  const state = item.useState()
+  return <LinkStyled to={item.getPath()}>{state.breadcrumbTitle}</LinkStyled>
 }
 
 export default Breakcrumb

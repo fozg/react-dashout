@@ -52,6 +52,33 @@ function TestComp({ title, ...props }: { title?: string; page: Page }) {
   )
 }
 
+function HomeComp({ title, page, ...props }: { title?: string; page: Page }) {
+  return (
+    <Card>
+      <code>
+        This is <b>{title}</b>
+      </code>
+      <br />
+      <code>and path is: {page.getPath()}</code>
+      <br />
+      <button
+        onClick={() => {
+          page.title = 'Page Testing'
+        }}
+      >
+        Set title to "Testing title"
+      </button>
+      <button
+        onClick={() => {
+          page.breadcrumbTitle = 'breadcrumb Testing'
+        }}
+      >
+        Set breadcrumb to "breadcrumb Testing"
+      </button>
+    </Card>
+  )
+}
+
 var Home: Page
 var key = 0
 const onAddPageToRoot = () => {
@@ -89,7 +116,7 @@ const onLayoutReady = (root: Root) => {
     title: 'Home',
     path: '/home',
     exact: true,
-    component: (props: any) => <TestComp title="Home Page" {...props} />,
+    component: (props: any) => <HomeComp title="Home Page" {...props} />,
     navigationOptions: {
       icon: <Icon iconName="Home" />,
     },
