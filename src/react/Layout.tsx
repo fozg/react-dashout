@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import styled, { CSSProperties } from 'styled-components'
-import { Fill, ViewPort, Top, LeftResizable } from 'react-spaces'
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import { Fill, ViewPort, Top, Left } from 'react-spaces'
+import { Route, Redirect } from 'react-router-dom'
 import Page from '../models/Page'
 import DefaultLogo from './default/DefaultLogo'
 import Header from './default/Header'
@@ -12,6 +12,7 @@ import Root from '../models/Root'
 type Props = {
   left?: ReactElement
   logo?: ReactElement
+  topNavControls?: ReactElement
   pages: Array<Page>
   topNavStyles?: CSSProperties
   defaultRoute?: string
@@ -21,6 +22,7 @@ type Props = {
 
 const Layout: React.FC<Props> = ({
   left,
+  topNavControls,
   logo = <DefaultLogo />,
   pages,
   topNavStyles = {},
@@ -30,29 +32,33 @@ const Layout: React.FC<Props> = ({
 }) => {
   // var site = Service.getRoot()
   // const pages = site.usePages()
+  const activePage = root.useActivePage()
 
   return (
-    <Router>
+    <>
       {defaultRoute && <Redirect exact from="/" to={defaultRoute} />}
       <ViewPortWrap className={className}>
         <StyledTopNav size="50px" style={topNavStyles}>
           <LogoWrap>{logo}</LogoWrap>
-          <Breakcrumb root={root}></Breakcrumb>
+          <Row>
+            <Breakcrumb root={root}></Breakcrumb>
+            {topNavControls}
+          </Row>
         </StyledTopNav>
 
         <Fill>
-          <LeftResizable
-            scrollable
-            maximumSize={500}
-            minimumSize={250}
-            size="280px"
-            style={{
-              borderRight: '1px solid #ddd',
-              background: '#fff',
-            }}
-          >
-            {left}
-          </LeftResizable>
+          {(!activePage || activePage.layouted) && (
+            <Left
+              scrollable
+              size={300}
+              style={{
+                borderRight: '1px solid #ddd',
+                background: '#fff',
+              }}
+            >
+              {left}
+            </Left>
+          )}
           <Fill style={{ backgroundColor: '#eee' }} scrollable>
             {pages.map((page: Page) => (
               <div key={page.key}>
@@ -62,7 +68,7 @@ const Layout: React.FC<Props> = ({
           </Fill>
         </Fill>
       </ViewPortWrap>
-    </Router>
+    </>
   )
 }
 
@@ -146,4 +152,11 @@ const MainPanelStyled = styled.div`
 `
 const LogoWrap = styled.div`
   width: 280px;
+`
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
 `
