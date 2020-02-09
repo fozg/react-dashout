@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { storiesOf } from '@storybook/react'
 import Dashout from '../src'

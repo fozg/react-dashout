@@ -21,7 +21,8 @@ type Props = {
   topNavStyles?: CSSProperties
   isLogined?: boolean
   unauthorizeRoutes?: ReactElement
-  topNavControls?: ReactElement
+  topNavControls?: ReactElement,
+  basename?: string
 }
 
 // var site = Service.getRoot()
@@ -60,12 +61,12 @@ class DashOut extends React.Component<Props> {
   }
 }
 
-function Wrap({ root, ...rest }: { root: Root }) {
+function Wrap({ root, basename, ...rest }: { root: Root, basename?: string }) {
   var pages = root.usePages()
   var isMasterLayoutEnable = root.useMasterLayoutEnabled()
 
   return (
-    <Router>
+    <Router basename={basename}>
       <Layout
         {...rest}
         pages={pages}

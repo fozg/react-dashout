@@ -1,6 +1,6 @@
 {
   "name": "react-dashout",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Dasboard for React",
   "main": "dist/react-dashout.cjs.js",
   "jsnext:main": "dist/react-dashout.esm.js",
