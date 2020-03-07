@@ -14,7 +14,7 @@ function Listing({ page }: Props) {
       {Array(20)
         .fill(0)
         .map((item: any, idx: number) => (
-          <ListItem key={idx} to={`/dashboard/a/${idx}`}>This is item number {idx}</ListItem>
+          <ListItem key={idx} to={`/dashboard/!/${idx}`}>This is item number {idx}</ListItem>
         ))}
     </Card>
   )

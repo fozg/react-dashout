@@ -19,6 +19,7 @@ export default class Root implements IRoot {
   readonly rootState: LightState
   private dashoutConfig: IDashoutConfig
   contentOptions?: IContentOptions
+  path = ''
 
   constructor(initConfig: IDashoutConfig) {
     this.dashoutConfig = initConfig

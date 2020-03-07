@@ -143,7 +143,7 @@ export default class Page implements IPage {
     var say = false
     var pages = this.children.getState('pages')
     for (var i = 0; i < pages.length; i++) {
-      if (pages[i].getPath().includes(path)) {
+      if (path.includes(pages[i].getPath())) {
         say = true
         break
       }

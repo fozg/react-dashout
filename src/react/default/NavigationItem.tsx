@@ -4,11 +4,16 @@ import styled, { css } from 'styled-components'
 import Page from '../../models/Page'
 import { DashoutModelType } from '../../models/Root'
 
-type props = { page: Page; level: number }
+type props = {
+  page: Page
+  level: number
+  isSelelected?: boolean
+  haveChilds?: boolean
+}
 
-export default ({ page, level }: props) => {
+export default ({ page, level, isSelelected, haveChilds }: props) => {
   return (
-    <div>
+    <Wrapper isSelelected={isSelelected} haveChilds={haveChilds} level={level}>
       <StyledLink
         to={page.getPath()}
         style={{
@@ -24,10 +29,24 @@ export default ({ page, level }: props) => {
         )}
         <span style={{ paddingLeft: 8 }}>{page.title}</span>
       </StyledLink>
-    </div>
+    </Wrapper>
   )
 }
 
+const Wrapper = styled.div<{ isSelelected: any; haveChilds: any; level: any }>(
+  (props: any) => ({
+    ...(props.isSelelected && {
+      backgroundColor: '#eee',
+      borderRadius: 10,
+
+      a: { color: '#007bdc', fontWeight: 400 },
+      ...(props.haveChilds && {
+        backgroundColor: 'transparent',
+        a: { color: '#000', fontWeight: 500 },
+      }),
+    }),
+  }),
+)
 const StyledLink = styled(NavLink)`
   user-select: none;
   color: #666;
@@ -36,29 +55,31 @@ const StyledLink = styled(NavLink)`
   font-size: 14px;
   padding: 5px;
   display: block;
+  font-weight: 400;
   display: flex;
   align-items: center;
-  height: 40px;
-  line-height: 40px;
+  min-height: 34px;
+  margin: 1px 0;
+  // line-height: 40px;
   box-sizing: border-box;
-
+  
   &:hover {
-    background: #ddd;
-    color: #000;
+    background: #efefef;
     border-radius: 10px;
   }
 
   &.active:not(.haveChildEmptyPath) {
-    font-weight: 700;
-    color: #000;
-    // background-color: #ddd;
+    // font-weight: 700;
+    // color: #000;
+    // border-radius: 10px;
+    // background-color: #eee;
     // box-shadow: 3px 0 0 0 #696969;
   }
 
   ${(props: { 'data-child': boolean }) =>
     props['data-child'] &&
     css`
-      font-size: 14px;
+      // font-size: 14px;
       &.active {
         // background-color: #ccc;
       }
@@ -66,5 +87,5 @@ const StyledLink = styled(NavLink)`
 `
 
 const IconWrap = styled.div`
-  padding: 3px;
+  // padding: 3px;
 `

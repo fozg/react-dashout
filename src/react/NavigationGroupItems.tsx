@@ -4,18 +4,21 @@ import { withRouter } from 'react-router-dom'
 import { RouteComponentProps } from 'react-router'
 import Page from '../models/Page'
 import NavigationItem from './default/NavigationItem'
-import { DashoutModelType } from '../models/Root'
 
 type Props = {
   page: Page
   level?: number
 }
 
-const isSelected = (page: Page, path: string): boolean => {
-  var result =
-    page.parent.type === DashoutModelType.Root && page.isChildHaveThisPath(path)
-  // debugger
-  return result
+const isSelected2 = (itemPage: Page, activePage: Page | null): boolean => {
+  if (!activePage) return false
+  return activePage
+    .getPathPages()
+    .reduce((o, item) => o + item.key + '/', '')
+    .includes(
+      itemPage.getPathPages().reduce((o, item) => o + item.key + '/', ''),
+    )
+  // return false
 }
 
 const NavigationGroupItems: React.FC<RouteComponentProps & Props> = ({
@@ -24,18 +27,20 @@ const NavigationGroupItems: React.FC<RouteComponentProps & Props> = ({
   location,
 }) => {
   const childs = page.usePages()
-
+  const activePage = page.Root.useActivePage()
+  const _isSelected = isSelected2(page, activePage)
   if (!page.navigationOptions.visible) return <></>
-
   return (
-    <Wrapper
-      isSelelected={isSelected(page, location.pathname)}
-      root={level === 0}
-    >
+    <Wrapper isSelelected={false} root={level === 0}>
       {page.navigationOptions.component ? (
         page.navigationOptions.component({ page, level })
       ) : (
-        <NavigationItem page={page} level={level} />
+        <NavigationItem
+          page={page}
+          level={level}
+          isSelelected={_isSelected}
+          haveChilds={childs.length !== 0 && level === 0}
+        />
       )}
       <div>
         {childs.map(page_child => (

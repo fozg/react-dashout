@@ -128,7 +128,7 @@ class ActivePage extends React.Component<{ page: Page }> {
   componentDidMount() {
     setTimeout(() => {
       this.props.page.setActivePage()
-    }, 100)
+    }, 0)
   }
   render() {
     return <></>

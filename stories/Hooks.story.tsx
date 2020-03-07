@@ -134,7 +134,7 @@ const onLayoutReady = (root: Root) => {
     key: 'Dashboard',
     title: 'Dashboard',
     path: '/dashboard',
-    exact: true,
+    // exact: true,
     navigationOptions: {
       icon: <Icon iconName="ViewDashboard" />,
     },
@@ -147,10 +147,10 @@ const onLayoutReady = (root: Root) => {
   var analytics = new Page({
     key: 'Analytics',
     title: 'Analytics',
-    path: '/a',
+    path: '',
+    exact: true,
     contentOptions: {
       maxWidth: 1000,
-      layout: 'MasterLayout',
     },
     navigationOptions: {
       icon: <Icon iconName="AnalyticsView" />,
@@ -164,7 +164,7 @@ const onLayoutReady = (root: Root) => {
   new Page({
     key: 'details',
     title: 'Details',
-    path: '/:d',
+    path: '/!/:d',
     exact: true,
     contentOptions: {
       // maxWidth: 1000,
@@ -179,13 +179,13 @@ const onLayoutReady = (root: Root) => {
   })
 
   new Page({
-    key: 'C',
+    key: 'Sales',
     title: 'Sales',
     path: '/Sales',
     navigationOptions: {
       icon: <Icon iconName="MultiSelectMirrored" />,
     },
-    component: (props: any) => <TestComp title="Random task" {...props} />,
+    component: (props: any) => <div>123</div>,
     parent: DashBoardPage,
   })
   new Page({
