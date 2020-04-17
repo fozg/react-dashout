@@ -1,18 +1,29 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { CSSProperties } from 'styled-components'
 import { Link } from 'react-router-dom'
 import Root from '../../models/Root'
 import { Page } from '../..'
 
-const Breakcrumb: React.FC<{ root: Root }> = ({ root }) => {
+export interface IBreadcrumbStyles {
+  linkStyles?: CSSProperties
+  outerStyles?: CSSProperties
+}
+
+const Breakcrumb: React.FC<{
+  root: Root
+  breadcrumbStyles?: IBreadcrumbStyles
+}> = ({ root, breadcrumbStyles }) => {
   const activePage = root.useActivePage()
   return (
-    <Row>
+    <Row style={breadcrumbStyles && breadcrumbStyles.outerStyles}>
       <Path>
         {activePage &&
           activePage.getPathPages().map((item, idx) => (
             <Item key={item.key}>
-              <Title item={item} />
+              <Title
+                item={item}
+                style={breadcrumbStyles && breadcrumbStyles.linkStyles}
+              />
               <Splash>/</Splash>
             </Item>
           ))}
@@ -21,9 +32,13 @@ const Breakcrumb: React.FC<{ root: Root }> = ({ root }) => {
   )
 }
 
-const Title = ({ item }: { item: Page }) => {
+const Title = ({ item, style }: { item: Page; style?: CSSProperties }) => {
   const state = item.useState()
-  return <LinkStyled to={item.getPath()}>{state.breadcrumbTitle}</LinkStyled>
+  return (
+    <LinkStyled to={item.getPath()} style={style}>
+      {state.breadcrumbTitle}
+    </LinkStyled>
+  )
 }
 
 export default Breakcrumb
@@ -57,6 +72,6 @@ const LinkStyled = styled(Link)`
     transition: none;
     color: #000;
     cursor: pointer;
-    background-color: #ececec;
+    background-color: rgba(255,255,255,.3);
   }
 `

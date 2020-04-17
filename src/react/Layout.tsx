@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react'
 import styled, { CSSProperties } from 'styled-components'
-import { Fill, ViewPort, Top, Left } from 'react-spaces'
 import { Route, Redirect } from 'react-router-dom'
 import Page from '../models/Page'
 import DefaultLogo from './default/DefaultLogo'
@@ -14,10 +13,16 @@ type Props = {
   logo?: ReactElement
   topNavControls?: ReactElement
   pages: Array<Page>
-  topNavStyles?: CSSProperties
   defaultRoute?: string
   className: string
   root: Root
+  topNavStyles?: CSSProperties
+  breadcrumbStyles?: {
+    linkStyles?: CSSProperties
+    outerStyles?: CSSProperties
+  }
+  logoWrapperStyles?: CSSProperties
+  sidebarStyles?: CSSProperties
 }
 
 const Layout: React.FC<Props> = ({
@@ -26,8 +31,11 @@ const Layout: React.FC<Props> = ({
   logo = <DefaultLogo />,
   pages,
   topNavStyles = {},
+  breadcrumbStyles = {},
+  logoWrapperStyles,
   defaultRoute,
   className,
+  sidebarStyles = {},
   root,
 }) => {
   // var site = Service.getRoot()
@@ -37,37 +45,39 @@ const Layout: React.FC<Props> = ({
   return (
     <>
       {defaultRoute && <Redirect exact from="/" to={defaultRoute} />}
-      <ViewPortWrap className={className}>
-        <StyledTopNav size="50px" style={topNavStyles}>
-          <LogoWrap>{logo}</LogoWrap>
-          <Row>
-            <Breakcrumb root={root}></Breakcrumb>
-            {topNavControls}
-          </Row>
-        </StyledTopNav>
+      <FillLayout className={className + ' _dashout'}>
+        {(!activePage || activePage.layouted) && (
+          <LeftSizebar
+            style={{
+              // borderRight: '1px solid rgba(0,0,0,.1)',
+              // boxShadow: 'inset 0 -1px 0 1px rgba(0,0,0,.1)',
+              background: '#fff',
+            }}
+          >
+            <StyledLogo style={topNavStyles}>
+              <LogoWrap style={logoWrapperStyles}>{logo}</LogoWrap>
+            </StyledLogo>
+            <Scrollable style={sidebarStyles}>{left}</Scrollable>
+          </LeftSizebar>
+        )}
 
-        <Fill>
-          {(!activePage || activePage.layouted) && (
-            <Left
-              scrollable
-              size={300}
-              style={{
-                borderRight: '1px solid #ddd',
-                background: '#fff',
-              }}
-            >
-              {left}
-            </Left>
-          )}
-          <Fill style={{ backgroundColor: '#eee' }} scrollable>
-            {pages.map((page: Page) => (
-              <div key={page.key}>
-                <BuildRoute page={page} />
-              </div>
-            ))}
-          </Fill>
-        </Fill>
-      </ViewPortWrap>
+        <Content style={{ backgroundColor: '#eee' }}>
+          <StyledTopNav style={topNavStyles}>
+            <Row>
+              <Breakcrumb
+                root={root}
+                breadcrumbStyles={breadcrumbStyles}
+              ></Breakcrumb>
+              {topNavControls}
+            </Row>
+          </StyledTopNav>
+          {pages.map((page: Page) => (
+            <div key={page.key}>
+              <BuildRoute page={page} />
+            </div>
+          ))}
+        </Content>
+      </FillLayout>
     </>
   )
 }
@@ -137,21 +147,51 @@ class ActivePage extends React.Component<{ page: Page }> {
 
 export default Layout
 
-const StyledTopNav = styled(Top)`
+const Scrollable = styled.div({
+  height: '100%',
+  overflow: 'auto',
+})
+
+const FillLayout = styled.div({
+  display: 'flex',
+  minHeight: '100vh',
+})
+const Content = styled.div({
+  display: 'flex',
+  flex: 1,
+  flexDirection: 'column',
+  marginLeft: 300,
+})
+const LeftSizebar = styled.div({
+  width: 300,
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  bottom: 0,
+})
+const StyledTopNav = styled.div`
   background: #000;
   color: #fff;
   display: flex;
+  width: 100%;
   flex-direction: row;
   align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 50px;
 `
-const ViewPortWrap = styled(ViewPort)`
-  background-color: #fff;
-`
+const StyledLogo = styled.div({
+  height: 50,
+})
 const MainPanelStyled = styled.div`
   margin: 0 auto;
 `
 const LogoWrap = styled.div`
-  width: 280px;
+  width: 300px;
+  height: 50px;
+  display: flex;
+  align-items: center;
 `
 const Row = styled.div`
   display: flex;

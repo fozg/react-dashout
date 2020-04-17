@@ -304,9 +304,26 @@ const WrapComponent = () => {
         contentOptions: { maxWidth: 1200 },
       }}
       topNavStyles={{
-        backgroundColor: '#fff',
+        backgroundColor: '#3f51b5',
         borderBottom: '1px solid #ddd',
         color: '#000',
+      }}
+      breadcrumbStyles={{
+        linkStyles: {
+          color: '#fff',
+        },
+        outerStyles: {
+          marginLeft: 10
+        }
+      }}
+      logoWrapperStyles={{
+        backgroundColor: "rgb(49, 64, 152)",
+        // borderRight: '1px solid #fff',
+        color: '#fff'
+      }}
+      sidebarStyles={{
+        backgroundColor: "#eee",
+        borderRight: '1px solid #ddd'
       }}
     />
   )

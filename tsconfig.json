@@ -16,7 +16,7 @@
     "downlevelIteration": true,
     "skipLibCheck": true,
     "listEmittedFiles": true,
-    "noEmit": true
+    "noEmit": true,
   },
   "exclude": ["dist"]
 }

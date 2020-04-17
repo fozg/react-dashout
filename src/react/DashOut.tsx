@@ -6,6 +6,7 @@ import Layout from './Layout'
 import AppService, { IDashoutConfig } from '../models/AppServices'
 import Root from '../models/Root'
 import { BrowserRouter as Router } from 'react-router-dom'
+import { IBreadcrumbStyles } from './default/Breakcrumb'
 
 export const Service = new AppService()
 
@@ -18,11 +19,14 @@ type Props = {
   logo?: React.ReactNode
   config?: IDashoutConfig
   defaultRoute?: string
-  topNavStyles?: CSSProperties
   isLogined?: boolean
   unauthorizeRoutes?: ReactElement
   topNavControls?: ReactElement,
   basename?: string
+  topNavStyles?: CSSProperties,
+  breadcrumbStyles?: IBreadcrumbStyles
+  logoWrapperStyles?: CSSProperties
+  sidebarStyles?: CSSProperties
 }
 
 // var site = Service.getRoot()
