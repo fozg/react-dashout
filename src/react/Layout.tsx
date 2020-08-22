@@ -7,6 +7,7 @@ import Header from './default/Header'
 import { MasterLayout } from './default/_layouts/MasterLayout'
 import Breakcrumb from './default/Breakcrumb'
 import Root from '../models/Root'
+import LightState from 'react-light-state'
 
 type Props = {
   left?: ReactElement
@@ -25,6 +26,14 @@ type Props = {
   sidebarStyles?: CSSProperties
 }
 
+const { useStore, setState } = new LightState(
+  { isCollapse: false },
+  'dashout-collapse',
+  {
+    storageName: 'dashout-collapse',
+  },
+)
+
 const Layout: React.FC<Props> = ({
   left,
   topNavControls,
@@ -41,6 +50,7 @@ const Layout: React.FC<Props> = ({
   // var site = Service.getRoot()
   // const pages = site.usePages()
   const activePage = root.useActivePage()
+  const isCollapse = useStore((state: any) => state.isCollapse)
 
   return (
     <>
@@ -52,12 +62,23 @@ const Layout: React.FC<Props> = ({
               // borderRight: '1px solid rgba(0,0,0,.1)',
               // boxShadow: 'inset 0 -1px 0 1px rgba(0,0,0,.1)',
               background: '#fff',
+              width: isCollapse ? 50 : 300,
             }}
           >
             <StyledLogo style={topNavStyles}>
               <LogoWrap style={logoWrapperStyles}>{logo}</LogoWrap>
             </StyledLogo>
-            <Scrollable style={sidebarStyles}>{left}</Scrollable>
+            <Scrollable style={sidebarStyles}>
+              <div style={{ width: 300 }}>{left}</div>
+            </Scrollable>
+            <Minize
+              onClick={() => {
+                setState({ isCollapse: !isCollapse })
+              }}
+              isCollapse={isCollapse}
+            >
+              <LeftIcon />
+            </Minize>
           </LeftSizebar>
         )}
 
@@ -148,26 +169,24 @@ class ActivePage extends React.Component<{ page: Page }> {
 export default Layout
 
 const Scrollable = styled.div({
-  height: '100%',
-  overflow: 'auto',
+  height: 'calc(100vh - 55px)',
+  overflowY: 'auto',
+  overflowX: 'hidden',
 })
-
 const FillLayout = styled.div({
   display: 'flex',
-  minHeight: '100vh',
 })
 const Content = styled.div({
-  display: 'flex',
   flex: 1,
-  flexDirection: 'column',
-  marginLeft: 300,
 })
 const LeftSizebar = styled.div({
   width: 300,
-  position: 'fixed',
+  height: '100vh',
+  position: 'sticky',
   top: 0,
-  left: 0,
   bottom: 0,
+  transition: 'width .5s',
+  // overflow: 'hidden'
 })
 const StyledTopNav = styled.div`
   background: #000;
@@ -200,3 +219,30 @@ const Row = styled.div`
   justify-content: space-between;
   flex: 1;
 `
+const Minize = styled.div<{ isCollapse: boolean }>`
+  position: absolute;
+  bottom: 20px;
+  right: -15px;
+  border-radius: 20px;
+  width: 30px;
+  height: 30px;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+  color: #999;
+  transition: transform 0.6s ease;
+  :hover {
+    cursor: pointer;
+    color: #111;
+  }
+  ${(props: any) => (props.isCollapse ? `transform: rotate(180deg)` : '')}
+`
+
+const LeftIcon = () => (
+  <svg viewBox="0 0 20 20" fill="currentColor" className="chevron-left w-6 h-6">
+    <path
+      fill-rule="evenodd"
+      d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+      clip-rule="evenodd"
+    ></path>
+  </svg>
+)
