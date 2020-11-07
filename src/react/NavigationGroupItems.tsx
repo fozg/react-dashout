@@ -78,5 +78,5 @@ const Wrapper = styled.div`
 `
 const AnimatedCollapse = styled.div`
   max-height: 0;
-  transition: max-height 0.3s ease;
+  overflow: hidden;
 `

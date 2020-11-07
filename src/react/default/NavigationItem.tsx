@@ -32,7 +32,7 @@ export default ({ page, level, isSelelected, haveChilds }: props) => {
             <span style={{ paddingLeft: 8 }}>{page.title}</span>
           </Flex>
           {page.navigationOptions.badge && (
-            <Badge>{page.navigationOptions.badge} </Badge>
+            <Badge style={page.navigationOptions.badgeStyle}>{page.navigationOptions.badge}</Badge>
           )}
         </Flex>
       </StyledLink>

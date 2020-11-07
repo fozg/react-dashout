@@ -1,4 +1,4 @@
-import React, { ComponentType } from 'react'
+import React, { ComponentType, CSSProperties } from 'react'
 import { W } from './AppServices'
 import LightState from 'react-light-state'
 import DefaultComponent from '../react/default/DefaultComponent'
@@ -18,7 +18,8 @@ export interface INavigationOptions {
   component?: React.SFC<{ page: Page; level: number }>
   icon?: any
   childPaddingMultiplier?: number,
-  badge?: any
+  badge?: any,
+  badgeStyle?: CSSProperties 
 }
 
 export interface IContentOptions {
