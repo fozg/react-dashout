@@ -24,15 +24,27 @@ export default ({ page, level, isSelelected, haveChilds }: props) => {
         data-child={page.parent.type === DashoutModelType.Page}
         className={page.haveChildWithEmptyPath() ? 'haveChildEmptyPath' : ''}
       >
-        {page.navigationOptions.icon && (
-          <IconWrap>{page.navigationOptions.icon}</IconWrap>
-        )}
-        <span style={{ paddingLeft: 8 }}>{page.title}</span>
+        <Flex justifyContent="space-between" style={{ width: '100%' }}>
+          <Flex>
+            {page.navigationOptions.icon && (
+              <IconWrap>{page.navigationOptions.icon}</IconWrap>
+            )}
+            <span style={{ paddingLeft: 8 }}>{page.title}</span>
+          </Flex>
+          {page.navigationOptions.badge && (
+            <Badge>{page.navigationOptions.badge} </Badge>
+          )}
+        </Flex>
       </StyledLink>
     </Wrapper>
   )
 }
 
+const Flex = styled.div<{ justifyContent?: string }>`
+  display: flex;
+  ${props =>
+    props.justifyContent ? { justifyContent: props.justifyContent } : null}
+`
 const Wrapper = styled.div<{ isSelelected: any; haveChilds: any; level: any }>(
   (props: any) => ({
     ...(props.isSelelected && {
@@ -62,7 +74,7 @@ const StyledLink = styled(NavLink)`
   margin: 1px 0;
   // line-height: 40px;
   box-sizing: border-box;
-  
+
   &:hover {
     background: #efefef;
     border-radius: 10px;
@@ -88,4 +100,11 @@ const StyledLink = styled(NavLink)`
 
 const IconWrap = styled.div`
   // padding: 3px;
+`
+const Badge = styled.div`
+  border-radius: 20px;
+  background: #ddd;
+  padding: 2px 5px;
+  font-size: 12px;
+  font-weight: 500;
 `

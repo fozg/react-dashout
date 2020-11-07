@@ -42,7 +42,8 @@ const NavigationGroupItems: React.FC<RouteComponentProps & Props> = ({
           haveChilds={childs.length !== 0 && level === 0}
         />
       )}
-      <div>
+
+      <AnimatedCollapse style={{ maxHeight: _isSelected ? childs.length * 50 : 0 }}>
         {childs.map(page_child => (
           <WrapWithrouter
             page={page_child}
@@ -50,7 +51,7 @@ const NavigationGroupItems: React.FC<RouteComponentProps & Props> = ({
             key={page_child.key}
           />
         ))}
-      </div>
+      </AnimatedCollapse>
     </Wrapper>
   )
 }
@@ -74,4 +75,8 @@ const Wrapper = styled.div`
       border-radius: 10px;
       padding: 5px;
     `}
+`
+const AnimatedCollapse = styled.div`
+  max-height: 0;
+  transition: max-height 0.3s ease;
 `

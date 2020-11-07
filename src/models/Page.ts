@@ -17,7 +17,8 @@ export interface INavigationOptions {
   visible?: boolean
   component?: React.SFC<{ page: Page; level: number }>
   icon?: any
-  childPaddingMultiplier?: number
+  childPaddingMultiplier?: number,
+  badge?: any
 }
 
 export interface IContentOptions {

@@ -154,6 +154,7 @@ const onLayoutReady = (root: Root) => {
     },
     navigationOptions: {
       icon: <Icon iconName="AnalyticsView" />,
+      badge: 5
     },
     headerOptions: {
       // masterLayoutComponent: () => <h3>Hello world</h3>,
@@ -195,6 +196,7 @@ const onLayoutReady = (root: Root) => {
     navigationOptions: {
       visible: true,
       icon: <Icon iconName="MultiSelectMirrored" />,
+      badge: 21
     },
     component: (props: any) => <TestComp title="Random task" {...props} />,
     parent: DashBoardPage,
